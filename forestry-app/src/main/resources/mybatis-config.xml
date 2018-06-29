@@ -7,7 +7,5 @@
 		<setting name="mapUnderscoreToCamelCase" value="true" />
     </settings>
     <!-- 设置别名 -->
-    <typeAliases>
-        <package name="com.forest.entity" />
-    </typeAliases>
+  
 </configuration>

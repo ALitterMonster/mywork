@@ -1,5 +1,14 @@
-com\forest\service\userauth\UserService.class
+com\forest\enums\BaseResultEnum.class
 com\forest\controller\login\LoginController.class
 com\forest\controller\userauth\UserController.class
+com\forest\controller\logging\LoggingController.class
 com\forest\dao\userauth\UserDao.class
+com\forest\entity\logging\ForestryLoggingRecord.class
 com\forest\entity\userauth\OperationUser.class
+com\forest\service\logging\LoggingPlanService.class
+com\forest\dao\logging\ForestryLoggingRecordMapper.class
+com\forest\dto\common\BaseResultDTO.class
+com\forest\entity\logging\ForestryLoggingPlan.class
+com\forest\controller\logging\LoggingRecordController.class
+com\forest\dao\logging\ForestryLoggingPlanMapper.class
+com\forest\dto\logging\LoggingPlanQueryReusltDTO.class

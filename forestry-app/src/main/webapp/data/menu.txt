@@ -13,7 +13,7 @@
 	    ]
 	},
     { "id": "xtgl", iconCls: "fa fa-desktop", text: "林政管理", children: [
-        { "id": "xzgl", iconCls: "fa fa-leaf", text: "采伐计划管理", url: "logging/planList.do" },
+        { "id": "xzgl", iconCls: "fa fa-leaf", text: "采伐计划管理", url: "loggingPlan/planList.do" },
         { "id": "sjzd", iconCls: "fa fa-book", text: "数据字典", url: "pages/1.html" },
         { "id": "djbm", iconCls: "fa fa-barcode", text: "单据编码", url: "pages/1.html" },
         { "id": "xtgn", iconCls: "fa fa-navicon", text: "系统功能", url: "pages/1.html" },
