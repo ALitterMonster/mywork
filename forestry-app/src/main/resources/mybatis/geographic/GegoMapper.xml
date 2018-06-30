@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.forest.dao.geographic.GegoDao">
+<mapper namespace="com.forest.dao.geographic.GeogDao">
     <select id="getGeogList" parameterType="java.lang.Integer" resultType="GeogInfo">
         SELECT t.* FROM geography_info t, operation_role_menu r 
         	WHERE t.menu_id = r.menu_id 

@@ -1,17 +1,30 @@
 package com.forest.entity.userauth;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class OperationUser implements Serializable{
 
-	
+	private Integer userId;
 	private String name;
 	private String userName;
+	private String userPwd;
 	private String mail;
 	private String mobileNo;
 	private String photo;
-	private String createDate;
-	private String updateDate;
+	private Date createDate;
+	private Date updateDate;
+	private Integer isValid;
+	
+	private Integer roleId;
+	private String roleName;
+	private Integer fId;
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 	public String getName() {
 		return name;
 	}
@@ -23,6 +36,12 @@ public class OperationUser implements Serializable{
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	public String getUserPwd() {
+		return userPwd;
+	}
+	public void setUserPwd(String userPwd) {
+		this.userPwd = userPwd;
 	}
 	public String getMail() {
 		return mail;
@@ -42,17 +61,40 @@ public class OperationUser implements Serializable{
 	public void setPhoto(String photo) {
 		this.photo = photo;
 	}
-	public String getCreateDate() {
+	public Date getCreateDate() {
 		return createDate;
 	}
-	public void setCreateDate(String createDate) {
+	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
-	public String getUpdateDate() {
+	public Date getUpdateDate() {
 		return updateDate;
 	}
-	public void setUpdateDate(String updateDate) {
+	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
 	}
-
+	public Integer getIsValid() {
+		return isValid;
+	}
+	public void setIsValid(Integer isValid) {
+		this.isValid = isValid;
+	}
+	public Integer getRoleId() {
+		return roleId;
+	}
+	public void setRoleId(Integer roleId) {
+		this.roleId = roleId;
+	}
+	public Integer getfId() {
+		return fId;
+	}
+	public void setfId(Integer fId) {
+		this.fId = fId;
+	}
+	public String getRoleName() {
+		return roleName;
+	}
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
 }

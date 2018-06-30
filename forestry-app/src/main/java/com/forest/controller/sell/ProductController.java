@@ -44,7 +44,7 @@ public class ProductController {
 			 @RequestParam(value="pageSize",required=false) String pageSize) {
 		 Map<String ,Object> queryParam = new HashMap<String ,Object>();
 		 ProductQueryReusltDTO resultDTO= new ProductQueryReusltDTO();
-		 queryParam.put("pageIndex",Integer.parseInt(pageIndex));
+		 queryParam.put("pageIndex",Integer.parseInt(pageIndex)*Integer.parseInt(pageSize));
 		 queryParam.put("pageSize",Integer.parseInt(pageSize));
 		 queryParam.put("isValid","1");
 		 try {

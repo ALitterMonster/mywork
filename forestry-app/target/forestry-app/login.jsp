@@ -2,110 +2,82 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-   <link href="../resource/frame/menu/menu.css" rel="stylesheet" type="text/css" />
-    <script src="../resource/frame/menu/menu.js" type="text/javascript"></script>
-    <script src="../resource/frame/menutip.js" type="text/javascript"></script>
-    <link href="../resource/frame/tabs.css" rel="stylesheet" type="text/css" />
-    <link href="../resource/frame/frame.css" rel="stylesheet" type="text/css" />
-    <link href="../resource/frame/index.css" rel="stylesheet" type="text/css" />
-<title>主页</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<jsp:include page="WEB-INF/pages/common/import.jsp"></jsp:include>
+<title>登录</title>
 </head>
 <body>
-    
-<div class="navbar">
-    <div class="navbar-header">
-        <div class="navbar-brand">MiniUI</div>
-        <div class="navbar-brand navbar-brand-compact">M</div>
-    </div>
-    <ul class="nav navbar-nav">
-        <li><a id="toggle"><span class="fa fa-bars" ></span></a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><i class="fa fa-pencil-square-o"></i> 修改密码</a></li>
-        <li class="dropdown">
-            <a class="dropdown-toggle userinfo">
-                <img class="user-img" src="../resource/frame/images/user.jpg" />个人资料<i class="fa fa-angle-down"></i>
-            </a>
-            <ul class="dropdown-menu pull-right">
-                <li ><a href="#"><i class="fa fa-eye "></i> 用户信息</a></li>
-                <li><a href="#"><i class="fa fa-user"></i> 退出登录</a></li>
-            </ul>
-        </li>
-    </ul>
-</div>
+	<div id="loginWindow" class="mini-window" title="用户登录" style="width:300px;height:170px;" allowDrag="false" showModal="true" showCloseButton="false">
+	    <div id="loginForm" style="padding:15px;padding-top:10px;">
+	        <table >
+	            <tr>
+	                <td style="width:60px;"><label for="username$text">帐号：</label></td>
+	                <td>
+	                    <input id="username" name="username" class="mini-textbox" required="true" style="width:150px;"/>
+	                </td>    
+	            </tr>
+	            <tr>
+	                <td style="width:60px;"><label for="pwd$text">密码：</label></td>
+	                <td>
+	                    <input id="pwd" name="pwd" class="mini-password" requiredErrorText="密码不能为空" required="true" style="width:150px;" onenter="onLoginClick"/>
+	                </td>
+	            </tr>            
+	            <tr>
+	                <td></td>
+	                <td style="padding-top:5px;">
+	                    <a onclick="onLoginClick" class="mini-button" style="width:60px;">登录</a>
+	                    <a onclick="onResetClick" class="mini-button" style="width:60px;">重置</a>
+	                </td>
+	            </tr>
+	        </table>
+	    </div>
 
-<div class="container">
+	</div>
     
-    <div class="sidebar">
-        <div class="sidebar-toggle"><i class = "fa fa-fw fa-dedent" ></i></div>
-        <div id="mainMenu"></div>
-    </div>
+	<script type="text/javascript">
+	    mini.parse();
+	
+	    var loginWindow = mini.get("loginWindow");
+	    loginWindow.show();
+	
+	    function onLoginClick(e) {
+	        var form = new mini.Form("#loginForm");
+	
+	        form.validate();
+	        if (form.isValid() == false) return;
+	        loginWindow.hide();
+	        var data = form.getData();      //获取表单多个控件的数据
+	        $.ajax({
+	            url: "${pageContext.request.contextPath}/login.do",
+	            type: "post",
+	            data:  data ,
+	            success: function (text) {
+	            	if(text.result == 'success'){
+	            		window.location = "${pageContext.request.contextPath}/main.jsp";
+	            	}else {
+	            		alert(text.msg);
+	            		window.location = "${pageContext.request.contextPath}";
+	            	}
+	                
+	            },
+	            error: function(text){
+	            	alert("登录失败，请重新登录！");
+	            	window.location = "${pageContext.request.contextPath}";
+	            }
+	        });
+	        
 
-    <div class="main">
-        <div id="mainTabs" class="mini-tabs main-tabs" activeIndex="0" style="height:100%;" plain="false"
-             buttons="#tabsButtons" arrowPosition="side" >
-            <div name="index" iconCls="fa-android" title="控制台">
-                欢迎来到林业管理系统
-            </div>
-        </div>
-    </div>
-   
-</div>
+	        
+	    }
+	    
+	    function onResetClick(e) {
+            var form = new mini.Form("#loginWindow");
+            form.clear();
+        }
+
+	</script>
+	
 </body>
 </html>
 
-<script>
-
-    function activeTab(item) {
-        var tabs = mini.get("mainTabs");
-        var tab = tabs.getTab(item.id);
-        if (!tab) {
-            tab = { name: item.id, title: item.text, url: item.url, iconCls: item.iconCls, showCloseButton: true };
-            tab = tabs.addTab(tab);
-        }
-        tabs.activeTab(tab);
-    }
-
-    $(function () {
-
-        //menu
-        var menu = new Menu("#mainMenu", {
-            itemclick: function (item) {
-                if (!item.children) {
-                    activeTab(item);
-                }
-            }
-        });
-
-        $(".sidebar").mCustomScrollbar({ autoHideScrollbar: true });
-
-        new MenuTip(menu);
-
-        $.ajax({
-            url: "../data/menu.txt",
-            success: function (text) {
-                var data = mini.decode(text);
-                menu.loadData(data);
-            }
-        })
-
-        //toggle
-        $("#toggle, .sidebar-toggle").click(function () {
-            $('body').toggleClass('compact');
-            mini.layout();
-        });
-
-        //dropdown
-        $(".dropdown-toggle").click(function (event) {
-            $(this).parent().addClass("open");
-            return false;
-        });
-
-        $(document).click(function (event) {
-            $(".dropdown").removeClass("open");
-        });
-    });
-
-</script>

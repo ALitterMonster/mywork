@@ -52,7 +52,7 @@ public class PreventionController {
 			 @RequestParam(value="pageSize",required=false) String pageSize) {
 		 Map<String ,Object> queryParam = new HashMap<String ,Object>();
 		 FireRecordQueryReusltDTO resultDTO= new FireRecordQueryReusltDTO();
-		 queryParam.put("pageIndex",Integer.parseInt(pageIndex));
+		 queryParam.put("pageIndex",Integer.parseInt(pageIndex)*Integer.parseInt(pageSize));
 		 queryParam.put("pageSize",Integer.parseInt(pageSize));
 		 try {
 		 if(!StringUtils.isEmpty(occurTime)){

@@ -55,7 +55,7 @@ public class LoggingCheckController {
 		 try{
 			 Map<String ,Object> queryParam = new HashMap<String ,Object>();
 			 
-			 queryParam.put("pageIndex",Integer.parseInt(pageIndex));
+			 queryParam.put("pageIndex",Integer.parseInt(pageIndex)*Integer.parseInt(pageSize));
 			 queryParam.put("pageSize",Integer.parseInt(pageSize));
 			 queryParam.put("isValid","1");
 			 try {
