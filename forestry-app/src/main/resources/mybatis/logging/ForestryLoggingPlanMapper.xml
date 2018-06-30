@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.forest.dao.logging.ForestryLoggingPlanMapper">
+  <resultMap id="BaseResultMap" type="com.forest.entity.logging.ForestryLoggingPlan">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="updated_by" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+    <result column="plan_name" jdbcType="VARCHAR" property="planName" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="amount" jdbcType="VARCHAR" property="amount" />
+    <result column="is_valid" jdbcType="VARCHAR" property="isValid" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="is_enable" jdbcType="VARCHAR" property="isEnable" />
+    <result column="area" jdbcType="VARCHAR" property="area" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, created_at, created_by, updated_at, updated_by, version, plan_name, end_time, 
+    amount, is_valid, start_time, is_enable, area
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from forestry_logging_plan
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+   <select id="getLoggingPlanCount" parameterType="java.util.Map" resultType="int">
+    select 
+    count(*)
+    from forestry_logging_plan
+    where 1=1
+     <if test="startAt != null">
+        and created_at > #{startAt,jdbcType=DATETIME}
+      </if>
+       <if test="endAt != null">
+        and created_at &lt;= #{endAt,jdbcType=DATETIME}
+      </if>
+      <if test="createdBy != null">
+       and  created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="updatedAt != null">
+        and updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updatedBy != null">
+       and updated_by = #{updatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="planName != null">
+       and plan_name like CONCAT('%', #{planName,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="endTime != null">
+        and end_time = #{endTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="amount != null">
+        and amount = #{amount,jdbcType=VARCHAR}
+      </if>
+      <if test="isValid != null">
+        and is_valid = #{isValid,jdbcType=VARCHAR}
+      </if>
+      <if test="startTime != null">
+        and start_time = #{startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="isEnable != null">
+        and is_enable = #{isEnable,jdbcType=VARCHAR}
+      </if>
+      <if test="area != null">
+       and area = #{area,jdbcType=VARCHAR}
+      </if>
+      </select>
+  <select id="queryPlanListPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from forestry_logging_plan
+    where 1=1
+     <if test="startAt != null">
+        and created_at > #{startAt,jdbcType=DATETIME}
+      </if>
+       <if test="endAt != null">
+        and created_at &lt;= #{endAt,jdbcType=DATETIME}
+      </if>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+      <if test="createdBy != null">
+       and created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="updatedAt != null">
+        and updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updatedBy != null">
+        and updated_by = #{updatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="planName != null">
+       and plan_name like CONCAT('%', #{planName,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="endTime != null">
+        and end_time = #{endTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="amount != null">
+       and amount = #{amount,jdbcType=VARCHAR}
+      </if>
+      <if test="isValid != null">
+       and is_valid = #{isValid,jdbcType=VARCHAR}
+      </if>
+      <if test="startTime != null">
+       and start_time = #{startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="isEnable != null">
+        and is_enable = #{isEnable,jdbcType=VARCHAR}
+      </if>
+      <if test="area != null">
+       and area = #{area,jdbcType=VARCHAR}
+      </if>
+       limit #{pageIndex,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER}
+      </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from forestry_logging_plan
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.forest.dao.logging.ForestryLoggingPlanMapper" >
+   <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+    	SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    insert into forestry_logging_plan (id,created_at, created_by, 
+      updated_at, updated_by, version, 
+      plan_name, end_time, amount, 
+      is_valid, start_time, is_enable, 
+      area)
+    values (  #{id,jdbcType=INTEGER},#{createdAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
+      #{updatedAt,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, 
+      #{planName,jdbcType=VARCHAR}, #{endTime,jdbcType=TIMESTAMP}, #{amount,jdbcType=VARCHAR}, 
+      #{isValid,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP}, #{isEnable,jdbcType=VARCHAR}, 
+      #{area,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.forest.dao.logging.ForestryLoggingPlanMapper" keyProperty="id" useGeneratedKeys="true">
+  	
+    insert into forestry_logging_plan
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+      <if test="updatedBy != null">
+        updated_by,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="planName != null">
+        plan_name,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="isValid != null">
+        is_valid,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="isEnable != null">
+        is_enable,
+      </if>
+      <if test="area != null">
+        area,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+     
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="planName != null">
+        #{planName,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="isValid != null">
+        #{isValid,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isEnable != null">
+        #{isEnable,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        #{area,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.forest.entity.logging.ForestryLoggingPlan">
+    update forestry_logging_plan
+    <set>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        updated_by = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+        version = version+1,
+      <if test="planName != null">
+        plan_name = #{planName,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        is_valid = #{isValid,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isEnable != null">
+        is_enable = #{isEnable,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.forest.entity.logging.ForestryLoggingPlan">
+    update forestry_logging_plan
+    set created_at = #{createdAt,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      updated_by = #{updatedBy,jdbcType=VARCHAR},
+      version = version+1,
+      plan_name = #{planName,jdbcType=VARCHAR},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      amount = #{amount,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      is_enable = #{isEnable,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

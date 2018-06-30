@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.druid.util.StringUtils;
 import com.forest.dto.common.BaseResultDTO;
 import com.forest.dto.logging.LoggingPlanQueryReusltDTO;
+import com.forest.dto.logging.LoggingPlanQueryReusltData;
 import com.forest.entity.logging.ForestryLoggingPlan;
 import com.forest.service.logging.LoggingPlanService;
 import com.google.gson.Gson;
@@ -39,11 +40,16 @@ public class LoggingController {
 	  }
 	 @ResponseBody
 	 @RequestMapping("/queryPlanList.do")
-	 public String queryPlanList(@RequestParam("planName") String planName,
-			 @RequestParam("startAt") String startAt,@RequestParam("endAt") String endAt) {
+	 public String queryPlanList(@RequestParam(value="planName",required=false) String planName,
+			 @RequestParam(value="startAt",required=false) String startAt,
+			 @RequestParam(value="endAt",required=false) String endAt,
+			 @RequestParam(value="pageIndex",required=false) String pageIndex,
+			 @RequestParam(value="pageSize",required=false) String pageSize) {
 		 Map<String ,Object> queryParam = new HashMap<String ,Object>();
 		 LoggingPlanQueryReusltDTO resultDTO= new LoggingPlanQueryReusltDTO();
-		 queryParam.put("planName","planName");
+		 queryParam.put("pageIndex",Integer.parseInt(pageIndex));
+		 queryParam.put("pageSize",Integer.parseInt(pageSize));
+		 queryParam.put("isValid","1");
 		 try {
 		 if(!StringUtils.isEmpty(startAt)){
 			 queryParam.put("startAt", new SimpleDateFormat("yyy-MM-dd HH:mm:ss").parse(startAt));
@@ -51,11 +57,33 @@ public class LoggingController {
 		 if(!StringUtils.isEmpty(endAt)){
 			queryParam.put("endAt", new SimpleDateFormat("yyy-MM-dd HH:mm:ss").parse(endAt));
 		 }
+		 if(!StringUtils.isEmpty(planName)){
+			 queryParam.put("planName",planName);
+		 }
+		
+		 resultDTO = loggingPlanService.queryList(queryParam);
 		 } catch (ParseException e) {
 				e.printStackTrace();
 				resultDTO.setError();
-			}
-		 resultDTO = loggingPlanService.queryList(queryParam);
+		}
+		 return new Gson().toJson(resultDTO);
+	  }
+	 @ResponseBody
+	 @RequestMapping("/queryById.do")
+	 public String queryById(@RequestParam(value="id") String id) {
+		 Map<String ,Object> queryParam = new HashMap<String ,Object>();
+		 LoggingPlanQueryReusltData resultDTO= new LoggingPlanQueryReusltData();
+		 
+		 try {
+		 if(StringUtils.isEmpty(id)){
+			resultDTO.setParamError();
+			return new Gson().toJson(resultDTO);
+		 }
+		 resultDTO = loggingPlanService.selectByPrimaryKey(Integer.parseInt(id));
+		 } catch (Exception e) {
+				e.printStackTrace();
+				resultDTO.setError();
+		}
 		 return new Gson().toJson(resultDTO);
 	  }
 	 /**
@@ -78,6 +106,20 @@ public class LoggingController {
 		 
 		 return new Gson().toJson(resultDTO);
 	  }
+	 
+	 @ResponseBody
+	 @RequestMapping(value="/batchDelete.do",method = RequestMethod.POST)
+	 public String batchDelete(@RequestParam("ids") String ids) {
+		 BaseResultDTO resultDTO = new BaseResultDTO();
+		 if(StringUtils.isEmpty(ids)){
+			 resultDTO.setParamError();
+			 return new Gson().toJson(resultDTO);
+		 }
+		 resultDTO = loggingPlanService.batchDelete(ids);
+		 
+		 return new Gson().toJson(resultDTO);
+	  }
+	 
 	 /**
 	  * 更新采伐计划
 	  * @param planInfo
@@ -85,7 +127,7 @@ public class LoggingController {
 	  */
 	 @ResponseBody
 	 @RequestMapping(value="/updatePlan.do",method = RequestMethod.POST)
-	 public String updatePlan(@RequestParam("updatePlan") String planInfo) {
+	 public String updatePlan(@RequestParam("planInfo") String planInfo) {
 		 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); 
 		 ForestryLoggingPlan plan = gson.fromJson(planInfo, ForestryLoggingPlan.class);
 		 BaseResultDTO resultDTO = new BaseResultDTO();

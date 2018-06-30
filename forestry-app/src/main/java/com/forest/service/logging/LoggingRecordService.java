@@ -11,7 +11,9 @@ import com.forest.dao.logging.ForestryLoggingPlanMapper;
 import com.forest.dao.logging.ForestryLoggingRecordMapper;
 import com.forest.dto.common.BaseResultDTO;
 import com.forest.dto.logging.LoggingPlanQueryReusltDTO;
+import com.forest.dto.logging.LoggingPlanQueryReusltData;
 import com.forest.dto.logging.LoggingRecordQueryReusltDTO;
+import com.forest.dto.logging.LoggingRecordQueryReusltData;
 import com.forest.entity.logging.ForestryLoggingPlan;
 import com.forest.entity.logging.ForestryLoggingRecord;
 
@@ -23,8 +25,6 @@ public class LoggingRecordService {
 	
 	public BaseResultDTO insertRecord(ForestryLoggingRecord record){
 		record.setCreatedAt(new Date());
-		record.setCreatedBy("sys");
-		record.setUpdatedAt(new Date());
 		record.setUpdatedBy("sys");
 		record.setVersion(new Integer(1));
 		record.setIsValid("1");
@@ -49,6 +49,23 @@ public class LoggingRecordService {
 		}
 		return resultDTO;
 	}
+	public BaseResultDTO batchDelete(String ids){
+		BaseResultDTO resultDTO = new BaseResultDTO();
+		resultDTO.setSucccess();
+		String[] idsList = ids.split(",");
+		for(String id :idsList){
+			ForestryLoggingRecord plan = new ForestryLoggingRecord();
+			plan.setId(new Integer(id));
+			plan.setIsValid("0");
+			plan.setUpdatedAt(new Date());
+			int result = forestryLoggingRecordMapper.updateByPrimaryKeySelective(plan);
+			if(result==0){
+				resultDTO.setError();
+				return resultDTO;
+			}
+		}
+		return resultDTO;
+	}
 	
 	public LoggingRecordQueryReusltDTO queryList(Map<String,Object> map){
 		LoggingRecordQueryReusltDTO resultDTO = new LoggingRecordQueryReusltDTO();
@@ -59,6 +76,14 @@ public class LoggingRecordService {
 			List<ForestryLoggingRecord> list =forestryLoggingRecordMapper.queryRecordListPage(map);
 			resultDTO.setData(list);
 		}
+		return resultDTO;
+	}
+	
+	public LoggingRecordQueryReusltData selectByPrimaryKey(Integer id){
+		LoggingRecordQueryReusltData resultDTO = new LoggingRecordQueryReusltData();
+		resultDTO.setSucccess();
+		ForestryLoggingRecord record = forestryLoggingRecordMapper.selectByPrimaryKey(id);
+		resultDTO.setData(record);
 		return resultDTO;
 	}
 }

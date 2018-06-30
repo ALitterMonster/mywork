@@ -19,8 +19,6 @@ public class ForestryLoggingRecord {
 
     private String reason;
 
-    private String uid;
-
     private Integer amout;
 
     private String isLegal;
@@ -95,13 +93,6 @@ public class ForestryLoggingRecord {
         this.reason = reason == null ? null : reason.trim();
     }
 
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid == null ? null : uid.trim();
-    }
 
     public Integer getAmout() {
         return amout;

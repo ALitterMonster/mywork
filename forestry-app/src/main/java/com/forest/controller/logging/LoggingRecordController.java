@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.druid.util.StringUtils;
 import com.forest.dto.common.BaseResultDTO;
 import com.forest.dto.logging.LoggingPlanQueryReusltDTO;
+import com.forest.dto.logging.LoggingPlanQueryReusltData;
 import com.forest.dto.logging.LoggingRecordQueryReusltDTO;
+import com.forest.dto.logging.LoggingRecordQueryReusltData;
 import com.forest.entity.logging.ForestryLoggingPlan;
 import com.forest.entity.logging.ForestryLoggingRecord;
 import com.forest.service.logging.LoggingPlanService;
@@ -33,24 +35,35 @@ public class LoggingRecordController {
 	 * @return
 	 */
 	 @RequestMapping("/recordList.do")
-	 public String planList() {
+	 public String recordList() {
 	    return "logging/loggingRecord";
 	  }
+	 
+	 @RequestMapping("/notAllowRecordList.do")
+	 public String notAllowRecordList() {
+	    return "logging/loggingNotAllowedRecord";
+	  }
+	 
 	 @ResponseBody
-	 @RequestMapping(value="/queryRecordList.do",method = RequestMethod.GET)
-	 public String queryPlanList(
-			 @RequestParam("createdStart") String createdStart,@RequestParam("createdEnd") String createdEnd) {
+	 @RequestMapping(value="/queryRecordList.do")
+	 public String queryPlanList(@RequestParam(value="createdBy",required=false) String createdBy,
+			 @RequestParam(value="startAt",required=false) String startAt,
+			 @RequestParam(value="endAt",required=false) String endAt,
+			 @RequestParam(value="pageIndex",required=false) String pageIndex,
+			 @RequestParam(value="pageSize",required=false) String pageSize) {
 		 LoggingRecordQueryReusltDTO resultDTO= new LoggingRecordQueryReusltDTO();
 		 try{
 			 Map<String ,Object> queryParam = new HashMap<String ,Object>();
 			 
-			 queryParam.put("planName","planName");
+			 queryParam.put("pageIndex",Integer.parseInt(pageIndex));
+			 queryParam.put("pageSize",Integer.parseInt(pageSize));
+			 queryParam.put("isValid","1");
 			 try {
-			 if(!StringUtils.isEmpty(createdStart)){
-				 queryParam.put("createdStart", new SimpleDateFormat("yyy-MM-dd HH:mm:ss").parse(createdStart));
+			 if(!StringUtils.isEmpty(startAt)){
+				 queryParam.put("startAt", new SimpleDateFormat("yyy-MM-dd HH:mm:ss").parse(startAt));
 			 }
-			 if(!StringUtils.isEmpty(createdEnd)){
-				queryParam.put("endAt", new SimpleDateFormat("yyy-MM-dd HH:mm:ss").parse(createdEnd));
+			 if(!StringUtils.isEmpty(endAt)){
+				queryParam.put("endAt", new SimpleDateFormat("yyy-MM-dd HH:mm:ss").parse(endAt));
 			 }
 			 } catch (ParseException e) {
 					e.printStackTrace();
@@ -69,13 +82,13 @@ public class LoggingRecordController {
 	  * @return
 	  */
 	 @ResponseBody
-	 @RequestMapping(value = "/addPlan.do",method = RequestMethod.POST)
+	 @RequestMapping(value = "/addRecord.do",method = RequestMethod.POST)
 	 public String addPlan(@RequestParam("data") String data) {
 		 BaseResultDTO resultDTO = new BaseResultDTO();
 		 try{
 			 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); 
 			 ForestryLoggingRecord dataDTO = gson.fromJson(data, ForestryLoggingRecord.class);
-			 if(StringUtils.isEmpty(dataDTO.getArea())||dataDTO.getAmout()!=null
+			 if(StringUtils.isEmpty(dataDTO.getArea())||dataDTO.getAmout()==null
 					 ||StringUtils.isEmpty(dataDTO.getIsLegal())){
 				 resultDTO.setParamError();
 				 return new Gson().toJson(resultDTO);
@@ -111,5 +124,37 @@ public class LoggingRecordController {
 			 resultDTO.setError();
 			 return new Gson().toJson(resultDTO);
 		 }
+	  }
+	 
+	 @ResponseBody
+	 @RequestMapping(value="/batchDelete.do",method = RequestMethod.POST)
+	 public String batchDelete(@RequestParam("ids") String ids) {
+		 BaseResultDTO resultDTO = new BaseResultDTO();
+		 if(StringUtils.isEmpty(ids)){
+			 resultDTO.setParamError();
+			 return new Gson().toJson(resultDTO);
+		 }
+		 resultDTO = loggingRecordService.batchDelete(ids);
+		 
+		 return new Gson().toJson(resultDTO);
+	  }
+	 
+	 @ResponseBody
+	 @RequestMapping("/queryById.do")
+	 public String queryById(@RequestParam(value="id") String id) {
+		 Map<String ,Object> queryParam = new HashMap<String ,Object>();
+		 LoggingRecordQueryReusltData resultDTO= new LoggingRecordQueryReusltData();
+		 
+		 try {
+		 if(StringUtils.isEmpty(id)){
+			resultDTO.setParamError();
+			return new Gson().toJson(resultDTO);
+		 }
+		 resultDTO = loggingRecordService.selectByPrimaryKey(Integer.parseInt(id));
+		 } catch (Exception e) {
+				e.printStackTrace();
+				resultDTO.setError();
+		}
+		 return new Gson().toJson(resultDTO);
 	  }
 }

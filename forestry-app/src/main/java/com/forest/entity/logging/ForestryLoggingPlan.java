@@ -13,7 +13,7 @@ public class ForestryLoggingPlan {
 
     private String updatedBy;
 
-    private int version;
+    private Integer version;
 
     private String planName;
 
@@ -69,11 +69,11 @@ public class ForestryLoggingPlan {
         this.updatedBy = updatedBy == null ? null : updatedBy.trim();
     }
 
-    public int getVersion() {
+    public Integer getVersion() {
         return version;
     }
 
-    public void setVersion(int version) {
+    public void setVersion(Integer version) {
         this.version= version;
     }
 
