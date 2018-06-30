@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.forest.dao.prevention.ForestryFireRecordMapper">
+  <resultMap id="fireRecordResultMap" type="com.forest.entity.prevention.ForestryFireRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="occur_time" jdbcType="TIMESTAMP" property="occurTime" />
+    <result column="affected_area" jdbcType="VARCHAR" property="affectedArea" />
+    <result column="deal_time" jdbcType="TIMESTAMP" property="dealTime" />
+    <result column="deal_plan" jdbcType="VARCHAR" property="dealPlan" />
+    <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+    <result column="latitude" jdbcType="VARCHAR" property="latitude" />
+    <result column="temperature" jdbcType="VARCHAR" property="temperature" />
+    <result column="air_humidity" jdbcType="VARCHAR" property="airHumidity" />
+    <result column="wind_direction" jdbcType="VARCHAR" property="windDirection" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id,  occur_time, affected_area, 
+    deal_time,deal_plan, longitude,latitude,temperature,air_humidity,wind_direction
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="fireRecordResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from forestry_fire_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+   <select id="getFireRecordCount" parameterType="java.util.Map" resultType="int">
+    select 
+    count(*)
+    from forestry_fire_record
+    where 1=1
+      <if test="occurTime != null">
+        and occur_time = #{occurTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="affectedArea != null">
+       and affected_area like CONCAT('%', #{affectedArea,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="dealTime != null">
+        and deal_time = #{dealTime,jdbcType=TIMESTAMP}
+      </if>
+      </select>
+  <select id="queryRecordListPage" parameterType="java.util.Map" resultMap="fireRecordResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from forestry_fire_record
+    where 1=1
+      <if test="occurTime != null">
+        and occur_time = #{occurTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="affectedArea != null">
+       and affected_area like CONCAT('%', #{affectedArea,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="dealTime != null">
+        and deal_time = #{dealTime,jdbcType=TIMESTAMP}
+      </if>
+       limit #{pageIndex,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER}
+      </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from forestry_fire_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.forest.dao.prevention.ForestryFireRecordMapper" >
+   <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+    	SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    insert into forestry_fire_record (id, 
+      occur_time, affected_area, deal_time, 
+      deal_plan, longitude, latitude, 
+      temperature,air_humidity,wind_direction)
+    values (  #{id,jdbcType=INTEGER},
+      #{occurTime,jdbcType=TIMESTAMP}, #{affectedArea,jdbcType=VARCHAR},#{dealTime,jdbcType=TIMESTAMP},
+      #{dealPlan,jdbcType=VARCHAR},#{longitude,jdbcType=VARCHAR},#{latitude,jdbcType=VARCHAR},
+      #{temperature,jdbcType=VARCHAR},#{airHumidity,jdbcType=VARCHAR},#{windDirection,jdbcType=VARCHAR}
+  </insert>
+  <insert id="insertSelective" parameterType="com.forest.dao.prevention.ForestryFireRecordMapper" keyProperty="id" useGeneratedKeys="true">
+  	
+    insert into forestry_fire_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="occurTime != null">
+        occur_time,
+      </if>
+      <if test="affectedArea != null">
+        affected_area,
+      </if>
+      <if test="dealTime != null">
+        deal_time,
+      </if>
+      <if test="dealPlan != null">
+        deal_plan,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="temperature != null">
+        temperature,
+      </if>
+      <if test="airHumidity != null">
+        air_humidity,
+      </if>
+      <if test="windDirection != null">
+        wind_direction,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="occurTime != null">
+        #{occurTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="affectedArea != null">
+        #{affectedArea,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null">
+        #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealPlan != null">
+        #{dealPlan,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="temperature != null">
+        #{temperature,jdbcType=VARCHAR},
+      </if>
+      <if test="airHumidity != null">
+        #{airHumidity,jdbcType=VARCHAR},
+      </if>
+      <if test="windDirection != null">
+        #{windDirection,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.forest.entity.prevention.ForestryFireRecord">
+    update forestry_fire_record
+    <set>
+      <if test="occurTime != null">
+        occur_time = #{occurTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="affectedArea != null">
+        affected_area = #{affectedArea,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null">
+        deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealPlan != null">
+        deal_plan = #{dealPlan,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="temperature != null">
+        temperature = #{temperature,jdbcType=VARCHAR},
+      </if>
+      <if test="airHumidity != null">
+        air_humidity = #{airHumidity,jdbcType=VARCHAR},
+      </if>
+      <if test="windDirection != null">
+        wind_direction = #{windDirection,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.forest.entity.prevention.ForestryFireRecord">
+    update forestry_fire_record
+    set 
+      occur_time = #{occurTime,jdbcType=TIMESTAMP},
+      affected_area = #{affectedArea,jdbcType=VARCHAR},
+      deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      deal_plan = #{dealPlan,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=VARCHAR},
+      temperature = #{temperature,jdbcType=VARCHAR},
+      air_humidity = #{airHumidity,jdbcType=VARCHAR},
+      wind_direction = #{windDirection,jdbcType=VARCHAR},
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

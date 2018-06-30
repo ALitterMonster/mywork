@@ -15,17 +15,17 @@
     { "id": "xtgl", iconCls: "fa fa-desktop", text: "林政管理", children: [
         { "id": "xzgl", iconCls: "fa fa-leaf", text: "采伐计划管理", url: "loggingPlan/planList.do" },
         { "id": "sjzd", iconCls: "fa fa-book", text: "采伐记录管理", url: "loggingRecord/recordList.do" },
-        { "id": "djbm", iconCls: "fa fa-barcode", text: "采伐记录管理", url: "loggingRecord/loggingNotAllowedRecord.do" },
+        { "id": "djbm", iconCls: "fa fa-barcode", text: "采伐记录管理", url: "loggingRecord/firePreventionRecordList.do" },
         { "id": "xtgn", iconCls: "fa fa-navicon", text: "系统功能", url: "pages/1.html" },
         { "id": "excel", iconCls: "fa fa-file-excel-o", text: "Excel配置", children: [
                   { "id": "drpz", iconCls: "fa fa-sign-out", text: "导入配置", url: "pages/1.html" },
                   { "id": "dcpz", iconCls: "fa fa-sign-out", text: "导出配置", url: "pages/1.html" }
             ]
         },
-        { "id": "sjgl", iconCls: "fa fa-database", text: "数据管理", children: [
-                { "id": "sjklj", iconCls: "fa fa-plug", text: "数据库连接", url: "pages/1.html" },
-                { "id": "sjbgl", iconCls: "fa fa-table", text: "数据表管理", url: "pages/1.html" },
-                { "id": "sjygl", iconCls: "fa fa-bullseye", text: "数据源管理", url: "pages/1.html" }
+        { "id": "sjgl", iconCls: "fa fa-database", text: "资源管理", children: [
+                { "id": "sjklj", iconCls: "fa fa-plug", text: "林产品出入库管理", url: "product/queryList.do" },
+                { "id": "sjbgl", iconCls: "fa fa-table", text: "火灾情况记录管理", url: "prevention/fireRecordList.do" },
+                { "id": "sjygl", iconCls: "fa fa-bullseye", text: "火灾预防巡防记录管理", url: "prevention/fireRecordList.do" }
             ]
         },
         { "id": "xtrz", iconCls: "fa fa-warning", text: "系统日志" },

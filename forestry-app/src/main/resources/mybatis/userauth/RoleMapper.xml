@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.forest.dao.userauth.RoleDao">
+    <select id="findRoleList" parameterType="OperationRole" resultType="OperationRole">
+        SELECT * FROM operation_role t WHERE 1=1
+        <if test="roleName != '' and roleName != null">
+        	and role_name like CONCAT(CONCAT('%',#{roleName}),'%')
+        </if>
+        <if test="description != '' and description != null">
+        	and description like  CONCAT(CONCAT('%',#{description}),'%')
+        </if>
+        <if test="roleLevel != '' and roleLevel != null">
+        	and role_level = #{roleLevel}
+        </if>
+    </select>
+    
+    <select id="roleComboBox" resultType="ComboBoxModel">
+    	SELECT t.role_id as id,t.role_name as text FROM operation_role t
+    </select>
+    
+    <!-- useGeneratedKeys设置为"true"表明要MyBatis获取由数据库自动生成的主键；keyProperty="id"指定把获取到的主键值注入到User的id属性 -->
+	<insert id="insertRoleInfo"  parameterType="OperationRole" useGeneratedKeys="true" keyProperty="roleId">
+		insert into operation_role(role_name,description,role_level) values (#{roleName},#{description},#{roleLevel});
+	</insert>
+	
+	<update id="updateRoleInfo" parameterType="OperationRole">
+		update operation_role set role_name = #{roleName},description=#{description} where role_id=#{roleId}
+	</update>
+	
+	<delete id="deleteRoleInfo" parameterType="int">
+		delete from operation_role where role_id=#{roleId}
+	</delete>
+
+
+</mapper>

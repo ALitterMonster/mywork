@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.forest.dao.userauth.MenuDao">
+    <select id="getMenuList" parameterType="java.lang.Integer" resultMap="getOperationMenu">
+        SELECT t.* FROM operation_menu t, operation_role_menu r 
+        	WHERE t.menu_id = r.menu_id 
+        	and  r.role_id in (select role_id from operation_user_role where user_id = #{userId});       
+    </select>
+    
+    <select id="menuList" parameterType="OperationMenu" resultMap="getOperationMenu">
+        SELECT t.* FROM operation_menu t WHERE 1=1
+        <if test="text != '' and text != null">
+        	and menu_name like CONCAT(CONCAT('%',#{text}),'%')
+        </if>
+        	  
+    </select>
+    
+    <!-- useGeneratedKeys设置为"true"表明要MyBatis获取由数据库自动生成的主键；keyProperty="id"指定把获取到的主键值注入到User的id属性 -->
+	<insert id="insertMenuInfo"  parameterType="OperationMenu" useGeneratedKeys="true" keyProperty="id">
+		insert into operation_menu(menu_name,menu_url,description,parent_id) values (#{text},#{url},#{description},#{parentId});
+	</insert>
+	
+	<update id="updateMenuInfo" parameterType="OperationMenu">
+		update operation_menu set menu_name=#{text},menu_url=#{url},description=#{description},parent_id = #{parentId} where menu_id=#{id}
+	</update>
+	
+	<delete id="deleteMenuInfo" parameterType="int">
+		delete from operation_menu where user_id=#{userId}
+	</delete>
+
+	<resultMap id="getOperationMenu" type="OperationMenu">
+	  <id property="id" column="menu_id"/>
+	  <result property="text" column="menu_name"/>
+	  <result property="url" column="menu_url"/>
+	  <result property="description" column="description"/>
+	  <result property="parentId" column="parent_id"/>
+	  <result property="menuSort" column="menu_sort"/>
+	</resultMap>
+	
+</mapper>

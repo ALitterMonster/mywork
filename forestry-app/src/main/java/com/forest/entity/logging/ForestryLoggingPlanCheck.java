@@ -5,13 +5,13 @@ import java.util.Date;
 public class ForestryLoggingPlanCheck {
     private Integer id;
 
-    private String createdAt;
+    private Date createdAt;
 
     private String createdBy;
 
     private Date updatedAt;
 
-    private Date updatedBy;
+    private String updatedBy;
 
     private Integer planId;
 
@@ -41,12 +41,12 @@ public class ForestryLoggingPlanCheck {
         this.id = id;
     }
 
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt == null ? null : createdAt.trim();
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getCreatedBy() {
@@ -65,11 +65,11 @@ public class ForestryLoggingPlanCheck {
         this.updatedAt = updatedAt;
     }
 
-    public Date getUpdatedBy() {
+    public String getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(Date updatedBy) {
+    public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
     }
 

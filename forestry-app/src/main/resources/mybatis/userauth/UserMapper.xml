@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.forest.dao.userauth.UserDao">
+    <select id="findUserList" parameterType="OperationUser" resultType="OperationUser">
+        SELECT t.*,r.role_id as roleId,r.role_name as roleName, ur.f_id fid FROM operation_user t, operation_user_role ur,operation_role r  WHERE  t.user_id = ur.user_id and r.role_id = ur.role_id 
+        <if test="userName != '' and userName != null">
+        	and user_name like CONCAT(CONCAT('%',#{userName}),'%')
+        </if>
+        <if test="name != '' and name != null">
+        	and name like  CONCAT(CONCAT('%',#{name}),'%')
+        </if>
+        <if test="isValid != '' and isValid != null">
+        	and is_valid = #{isValid}
+        </if>
+    </select>
+    
+    <select id="findForLogin" parameterType="String" resultType="OperationUser">
+        SELECT * FROM operation_user t WHERE t.is_valid=1 and t.user_name = #{username}
+    </select>
+    
+    <!-- useGeneratedKeys设置为"true"表明要MyBatis获取由数据库自动生成的主键；keyProperty="id"指定把获取到的主键值注入到User的id属性 -->
+	<insert id="insertUserInfo"  parameterType="OperationUser" useGeneratedKeys="true" keyProperty="userId">
+		insert into operation_user(user_name,name,user_pwd,mail,mobile_no,create_date,update_date,is_valid) values (#{userName},#{name},#{userPwd},#{mail},#{mobileNo},SYSDATE(),SYSDATE(),#{isValid});
+	</insert>
+	
+	<!-- user-role绑定 -->
+	<insert id="insertUserRole"  parameterType="OperationUser" useGeneratedKeys="true" keyProperty="f_id">
+		insert into operation_user_role (user_id,role_id) values (#{userId},#{roleId});
+	</insert>
+	
+	<update id="updateUserRole" parameterType="OperationUser">
+		update operation_user_role set user_id = #{userId},role_id=#{roleId} where f_id = #{fId}
+	</update>
+	
+	<update id="updateUserInfo" parameterType="OperationUser">
+		update operation_user set user_name = #{userName},name=#{name},user_pwd=#{userPwd},mail=#{mail},mobile_no=#{mobileNo},update_date = SYSDATE(),is_valid=#{isValid} where user_id=#{userId}
+	</update>
+	
+	<delete id="deleteUserInfo" parameterType="int">
+		delete from operation_user where user_id=#{userId}
+	</delete>
+
+</mapper>

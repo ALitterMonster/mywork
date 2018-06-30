@@ -1,5 +1,8 @@
 package com.forest.dao.logging;
 
+import java.util.List;
+import java.util.Map;
+
 import com.forest.entity.logging.ForestryLoggingPlanCheck;
 
 public interface ForestryLoggingPlanCheckMapper {
@@ -14,4 +17,7 @@ public interface ForestryLoggingPlanCheckMapper {
     int updateByPrimaryKeySelective(ForestryLoggingPlanCheck record);
 
     int updateByPrimaryKey(ForestryLoggingPlanCheck record);
+    
+    int getLoggingPlanCheckCount(Map<String,Object> map);
+    List<ForestryLoggingPlanCheck> queryPlanCheckListPage(Map<String,Object> map);
 }

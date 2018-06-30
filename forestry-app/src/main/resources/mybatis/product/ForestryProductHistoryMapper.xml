@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.forest.dao.product.ForestryProductHistoryMapper">
+  <resultMap id="productHisResultMap" type="com.forest.entity.product.ForestryProductHistory">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="updated_by" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="version" jdbcType="VARCHAR" property="version" />
+    <result column="is_valid" jdbcType="VARCHAR" property="isValid" />
+    <result column="amount" jdbcType="DOUBLE" property="amount" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="origin" jdbcType="VARCHAR" property="origin" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <if test="createdAt != null">
+       and  created_at = #{createdAt,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createdBy != null">
+      and   created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="updatedAt != null">
+      and  updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updatedBy != null">
+      and  updated_by = #{updatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="version != null">
+      and  version = #{version,jdbcType=VARCHAR}
+      </if>
+      <if test="isValid != null">
+      and  is_valid = #{isValid,jdbcType=VARCHAR}
+      </if>
+      <if test="amount != null">
+       and amount = #{amount,jdbcType=DOUBLE}
+      </if>
+      <if test="type != null">
+       and type = #{type,jdbcType=VARCHAR}
+      </if>
+      <if test="origin != null">
+      and  origin = #{origin,jdbcType=VARCHAR}
+      </if>
+      <if test="productId != null">
+      and  product_id = #{productId,jdbcType=VARCHAR}
+      </if>
+  </sql>
+  <sql id="Base_Column_List">
+    id, created_at, created_by, updated_at, updated_by, version, is_valid, amount, type, 
+    origin,productId
+  </sql>
+  <select id="selectByExample" parameterType="java.util.Map" resultMap="productHisResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from forestry_product_history
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="productHisResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from forestry_product_history
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from forestry_product_history
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.forest.entity.product.ForestryProductHistory">
+  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+    	SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    insert into forestry_product_history (id, created_at, created_by, 
+      updated_at, updated_by, version, 
+      is_valid, amount, type, 
+      origin)
+    values (#{id,jdbcType=INTEGER}, #{createdAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
+      #{updatedAt,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, 
+      #{isValid,jdbcType=VARCHAR}, #{amount,jdbcType=DOUBLE}, #{type,jdbcType=VARCHAR}, 
+      #{origin,jdbcType=VARCHAR},#{productId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.forest.entity.product.ForestryProductHistory">
+    insert into forestry_product_history
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+      <if test="updatedBy != null">
+        updated_by,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="isValid != null">
+        is_valid,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="origin != null">
+        origin,
+      </if>
+      <if test="product_id != null">
+        productId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        #{isValid,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="origin != null">
+        #{origin,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*) from forestry_product_history
+    where 1=1
+    <include refid="Example_Where_Clause" />
+    limit #{pageIndex,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER}
+  </select>
+  <update id="updateByPrimaryKeySelective" parameterType="com.forest.entity.product.ForestryProductHistory">
+    update forestry_product_history
+    <set>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        updated_by = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        is_valid = #{isValid,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="origin != null">
+        origin = #{origin,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.forest.entity.product.ForestryProductHistory">
+    update forestry_product_history
+    set created_at = #{createdAt,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      updated_by = #{updatedBy,jdbcType=VARCHAR},
+      version = #{version,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DOUBLE},
+      type = #{type,jdbcType=VARCHAR},
+      origin = #{origin,jdbcType=VARCHAR},
+      product_id = #{productId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

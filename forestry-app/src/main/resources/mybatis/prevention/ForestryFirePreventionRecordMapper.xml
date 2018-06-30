@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.forest.dao.prevention.ForestryFirePreventionRecordMapper">
+  <resultMap id="fireResultMap" type="com.forest.entity.prevention.ForestryFirePreventionRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="updated_by" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+    <result column="prevention_area" jdbcType="VARCHAR" property="preventionArea" />
+    <result column="prevention_time" jdbcType="TIMESTAMP" property="preventionTime" />
+    <result column="prevention_result" jdbcType="VARCHAR" property="preventionResult" />
+    <result column="risk_level" jdbcType="VARCHAR" property="riskLevel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, created_at, created_by, updated_at, updated_by, version, prevention_area, prevention_time, 
+    prevention_result, risk_level
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="fireResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from forestry_fire_prevention_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+   <select id="getFirePreventionRecordCount" parameterType="java.util.Map" resultType="int">
+    select 
+    count(*)
+    from forestry_fire_prevention_record
+    where 1=1
+     <if test="startAt != null">
+        and created_at > #{startAt,jdbcType=DATETIME}
+      </if>
+       <if test="endAt != null">
+        and created_at &lt;= #{endAt,jdbcType=DATETIME}
+      </if>
+      <if test="createdBy != null">
+       and  created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="updatedAt != null">
+        and updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updatedBy != null">
+       and updated_by = #{updatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="preventionArea != null">
+       and prevention_area like CONCAT('%', #{preventionArea,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="preventionTime != null">
+        and prevention_time = #{preventionTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="preventionResult != null">
+       and prevention_result like CONCAT('%', #{preventionResult,jdbcType=VARCHAR},'%')
+      </if>
+      </select>
+  <select id="queryRecordListPage" parameterType="java.util.Map" resultMap="fireResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from forestry_fire_prevention_record
+    where 1=1
+     <if test="startAt != null">
+        and created_at > #{createdAt,jdbcType=DATETIME}
+      </if>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+      <if test="createdBy != null">
+       and created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="updatedAt != null">
+        and updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updatedBy != null">
+        and updated_by = #{updatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="preventionArea != null">
+       and prevention_area like CONCAT('%', #{preventionArea,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="preventionTime != null">
+        and prevention_time = #{preventionTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="preventionResult != null">
+       and prevention_result like CONCAT('%', #{preventionResult,jdbcType=VARCHAR},'%')
+      </if>
+       limit #{pageIndex,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER}
+      </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from forestry_fire_prevention_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.forest.dao.prevention.ForestryFirePreventionRecordMapper" >
+   <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+    	SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    insert into forestry_fire_prevention_record (id,created_at, created_by, 
+      updated_at, updated_by, version, 
+      prevention_area, prevention_time, prevention_result, 
+      risk_level)
+    values (  #{id,jdbcType=INTEGER},#{createdAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
+      #{updatedAt,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, 
+      #{preventionArea,jdbcType=VARCHAR}, #{preventionTime,jdbcType=TIMESTAMP}, #{preventionResult,jdbcType=VARCHAR}, 
+      #{riskLevel,jdbcType=INTEGER}
+  </insert>
+  <insert id="insertSelective" parameterType="com.forest.dao.prevention.ForestryFirePreventionRecordMapper" keyProperty="id" useGeneratedKeys="true">
+  	
+    insert into forestry_fire_prevention_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+      <if test="updatedBy != null">
+        updated_by,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="preventionArea != null">
+        prevention_area,
+      </if>
+      <if test="preventionTime != null">
+        prevention_time,
+      </if>
+      <if test="preventionResult != null">
+        prevention_result,
+      </if>
+      <if test="riskLevel != null">
+        risk_level,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+     
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="preventionArea != null">
+        #{preventionArea,jdbcType=VARCHAR},
+      </if>
+      <if test="preventionTime != null">
+        #{preventionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="preventionResult != null">
+        #{preventionResult,jdbcType=VARCHAR},
+      </if>
+      <if test="riskLevel != null">
+        #{riskLevel,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.forest.dao.prevention.ForestryFirePreventionRecordMapper">
+    update forestry_fire_prevention_record
+    <set>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        updated_by = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+        version = version+1,
+      <if test="preventionArea != null">
+        prevention_area = #{preventionArea,jdbcType=VARCHAR},
+      </if>
+      <if test="preventionTime != null">
+        prevention_time = #{preventionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="preventionResult != null">
+        prevention_result = #{preventionResult,jdbcType=VARCHAR},
+      </if>
+      <if test="riskLevel != null">
+        risk_level = #{riskLevel,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.forest.dao.prevention.ForestryFirePreventionRecordMapper">
+    update forestry_fire_prevention_record
+    set created_at = #{createdAt,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      updated_by = #{updatedBy,jdbcType=VARCHAR},
+      version = version+1,
+      prevention_area = #{preventionArea,jdbcType=VARCHAR},
+      prevention_time = #{preventionTime,jdbcType=TIMESTAMP},
+      prevention_result = #{preventionResult,jdbcType=VARCHAR},
+      risk_level = #{riskLevel,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

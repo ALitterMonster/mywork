@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.forest.dto.common.BaseResultDTO;
 import com.forest.entity.logging.ForestryLoggingPlan;
-import com.forest.entity.logging.ForestryLoggingRecord;
 
 public class LoggingPlanQueryReusltData extends BaseResultDTO{
 

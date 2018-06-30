@@ -13,6 +13,7 @@ import com.forest.dto.common.BaseResultDTO;
 import com.forest.dto.logging.LoggingPlanQueryReusltDTO;
 import com.forest.dto.logging.LoggingPlanQueryReusltData;
 import com.forest.entity.logging.ForestryLoggingPlan;
+import com.forest.entity.logging.ForestryLoggingPlanCheck;
 
 @Service
 public class LoggingPlanService {
@@ -31,6 +32,10 @@ public class LoggingPlanService {
 		
 		BaseResultDTO resultDTO = new BaseResultDTO();
 		int result = forestryLoggingPlanMapper.insert(plan);
+		
+		ForestryLoggingPlanCheck plancheck = new ForestryLoggingPlanCheck();
+		plancheck.setCreatedAt(new Date());
+		plancheck.setCreatedBy("");
 		if(result>0){
 			resultDTO.setSucccess();
 		}else{
