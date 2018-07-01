@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.forest.dao.geographic.GeogDao">
+    
+    <select id="geogList" parameterType="GeogInfo" resultType="GeogInfo">
+        SELECT t.* FROM geography_info t WHERE 1=1
+        <if test="name != '' and name != null">
+        	and name like CONCAT(CONCAT('%',#{name}),'%')
+        </if>
+        
+        <if test="type != '' and type != null">
+        	and type = #{type}
+        </if>
+        	  
+    </select>
+    
+    <!-- useGeneratedKeys设置为"true"表明要MyBatis获取由数据库自动生成的主键；keyProperty="id"指定把获取到的主键值注入到User的id属性 -->
+	<insert id="insertGeogInfo"  parameterType="GeogInfo" useGeneratedKeys="true" keyProperty="id">
+		insert into geography_info(name,longitude,latitude,type,area,description) values (#{name},#{longitude},#{latitude},#{type},#{area},#{description});
+	</insert>
+	
+	<update id="updateGeogInfo" parameterType="GeogInfo">
+		update geography_info set name=#{name},longitude=#{longitude},type=#{type},area=#{area},description=#{description} where id=#{id}
+	</update>
+	
+	<delete id="deleteGeogInfo" parameterType="int">
+		delete from geography_info where id=#{id}
+	</delete>
+
+</mapper>

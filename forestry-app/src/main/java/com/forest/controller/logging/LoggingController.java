@@ -34,12 +34,12 @@ public class LoggingController {
 	 * 采伐计划管理页面
 	 * @return
 	 */
-	 @RequestMapping(value="/planList.do",method = RequestMethod.GET)
+	 @RequestMapping(value="/planList.do",method = RequestMethod.GET,produces = "application/json; charset=utf-8")
 	 public String planList() {
 	    return "logging/loggingPlan";
 	  }
 	 @ResponseBody
-	 @RequestMapping("/queryPlanList.do")
+	 @RequestMapping(value="/queryPlanList.do",produces = "application/json; charset=utf-8")
 	 public String queryPlanList(@RequestParam(value="planName",required=false) String planName,
 			 @RequestParam(value="startAt",required=false) String startAt,
 			 @RequestParam(value="endAt",required=false) String endAt,
@@ -69,7 +69,7 @@ public class LoggingController {
 		 return new Gson().toJson(resultDTO);
 	  }
 	 @ResponseBody
-	 @RequestMapping("/queryById.do")
+	 @RequestMapping(value="/queryById.do",produces = "application/json; charset=utf-8")
 	 public String queryById(@RequestParam(value="id") String id) {
 		 Map<String ,Object> queryParam = new HashMap<String ,Object>();
 		 LoggingPlanQueryReusltData resultDTO= new LoggingPlanQueryReusltData();
@@ -92,7 +92,7 @@ public class LoggingController {
 	  * @return
 	  */
 	 @ResponseBody
-	 @RequestMapping(value="/addPlan.do",method = RequestMethod.POST)
+	 @RequestMapping(value="/addPlan.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
 	 public String addPlan(@RequestParam("planInfo") String planInfo) {
 		 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); 
 		 ForestryLoggingPlan plan = gson.fromJson(planInfo, ForestryLoggingPlan.class);
@@ -108,7 +108,7 @@ public class LoggingController {
 	  }
 	 
 	 @ResponseBody
-	 @RequestMapping(value="/batchDelete.do",method = RequestMethod.POST)
+	 @RequestMapping(value="/batchDelete.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
 	 public String batchDelete(@RequestParam("ids") String ids) {
 		 BaseResultDTO resultDTO = new BaseResultDTO();
 		 if(StringUtils.isEmpty(ids)){
@@ -126,7 +126,7 @@ public class LoggingController {
 	  * @return
 	  */
 	 @ResponseBody
-	 @RequestMapping(value="/updatePlan.do",method = RequestMethod.POST)
+	 @RequestMapping(value="/updatePlan.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
 	 public String updatePlan(@RequestParam("planInfo") String planInfo) {
 		 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); 
 		 ForestryLoggingPlan plan = gson.fromJson(planInfo, ForestryLoggingPlan.class);

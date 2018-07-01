@@ -17,7 +17,7 @@
             </td>
             <td>类型：</td>
             <td>
-                <input class="mini-textbox" id="menuName" name="menuName"/>
+                <input id="type" name="type" class="mini-combobox" style="width:150px;" textField="text" valueField="id" data="[{id:2,text:'湿地'},{id:1,text:'林产品种植'},{id:0,text:'其他'}]" value="" showNullItem="true" allowInput="true" required="true"/>
             </td>
             <td>                
             	<a class="mini-button" iconCls="icon-save" onclick="queryList()">查询</a>
@@ -38,34 +38,44 @@
             </table>           
         </div>
  <div id="dataGrid" class="mini-datagrid" style="width:100%;height:500px;" 
-    url="${pageContext.request.contextPath}/menuManager/list.do"
+    url="${pageContext.request.contextPath}/geog/list.do"
     idField="id" allowResize="true" multiSelect="true" 
     sizeList="[20,30,50,100]" pageSize="20" 
-    showHeader="true" title="菜单列表"
+    showHeader="true" title="地理信息列表"
  onmouseup="return datagrid1_onmouseup()">
     <div property="columns">
         <div field="id" width="80" align="center" headerAlign="center" allowSort="true">序号</div>  
         <div type="checkcolumn"></div>
-        <div field="text" width="120" headerAlign="center"align="center" allowSort="true">菜单名称</div>   
-        <div field="url" width="120" headerAlign="center"align="center" allowSort="true">url</div>     
-        <div field="description" width="120" headerAlign="center"align="center" allowSort="true">描述</div>  
-        <div field="parentId" width="120" headerAlign="center"align="center" allowSort="true">父节点ID</div>                         
+        <div field="name" width="120" headerAlign="center"align="center" allowSort="true">名称</div>   
+        <div field="longitude" width="120" headerAlign="center"align="center" allowSort="true">经度</div>     
+        <div field="latitude" width="120" headerAlign="center"align="center" allowSort="true">纬度</div>  
+        <div field="type" width="120" headerAlign="center"align="center" renderer="onRenderer" allowSort="true">类型</div>      
+        <div field="area" width="120" headerAlign="center"align="center" allowSort="true">面积</div>  
+         <div field="description" width="120" headerAlign="center"align="center" allowSort="true">描述</div>                   
     </div>
 </div>
 <div class = "mini-window"id="editForm" style="width:60%;border:solid 1px #aaa;display:none;">
 <fieldset style="width:97%;border:solid 1px #aaa;" id="editField">
-        <legend>菜单信息</legend>
+        <legend>地理信息</legend>
         <div id="editForm1" style="padding:5px;">
             <table style="width:100%;">
                 <tr>
-                    <td style="width:80px;">菜单名称：</td>
-                    <td style="width:150px;"><input id="text" name="text" class="mini-textbox" required="true"/></td>
-                    <td style="width:80px;">url：</td>
-                    <td style="width:150px;"><input id="url" name="url" class="mini-textbox"/></td>
+                    <td style="width:80px;">名称：</td>
+                    <td style="width:150px;"><input id="name" name="name" class="mini-textbox" required="true"/></td>
+                    <td style="width:80px;">类型：</td>
+                    <td style="width:150px;">
+                    	<input id="type" name="type" class="mini-combobox" style="width:150px;" textField="text" valueField="id" data="[{id:2,text:'湿地'},{id:1,text:'林产品种植'},{id:0,text:'其他'}]" value="" showNullItem="true" allowInput="true" required="true"/>
+					</td>
                </tr>
                <tr>
-               		<td style="width:80px;">父级ID：</td>
-                    <td style="width:150px;"><input id="parentId" name="parentId" class="mini-textbox" required="true"/></td>
+               		<td style="width:80px;">经度：</td>
+                    <td style="width:150px;"><input id="longitude" name="longitude" class="mini-textbox" required="true"/></td>
+                    <td style="width:80px;">纬度：</td>
+                    <td style="width:150px;"><input id="latitude" name="latitude" class="mini-textbox" required="true"/></td>
+               </tr>
+               <tr>
+               		<td style="width:80px;">面积：</td>
+                    <td style="width:150px;"><input id="area" name="area" class="mini-textbox" required="true"/></td>
                </tr>
                <tr>
                     <td style="width:80px;">描述：</td>
@@ -102,8 +112,9 @@
 	}
 	
 	function onRenderer(e) {
-		if ("1" == e.value) return "是";
-		else if("0" == e.value) return "否";
+		if ("2" == e.value) return "湿地";
+		else if("1" == e.value) return "林产品种植";
+		else if("0" == e.value) return "其他";
 		else return "";
     }
 	
@@ -138,7 +149,7 @@
     	}
   		ids=ids.substring(1);
     	$.ajax({
-        	url: "${pageContext.request.contextPath}/menuManager/delete.do",
+        	url: "${pageContext.request.contextPath}/geog/delete.do",
         	data: { ids: ids },
         	type: "post",
         	success: function (text) {
@@ -164,7 +175,7 @@
 		var json = mini.encode(data);
 		
    		$.ajax({
-       		url: "${pageContext.request.contextPath}/menuManager/save.do",
+       		url: "${pageContext.request.contextPath}/geog/save.do",
        		data: { data: json },
        		type: "post",
        		success: function (text) {

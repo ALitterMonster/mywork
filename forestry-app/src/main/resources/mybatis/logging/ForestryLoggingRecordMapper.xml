@@ -36,7 +36,7 @@
      and   created_at > #{startAt,jdbcType=TIMESTAMP}
       </if>
       <if test="endAt != null">
-      and  endAt &lt;= #{endAt,jdbcType=TIMESTAMP}
+      and  created_at &lt;= #{endAt,jdbcType=TIMESTAMP}
       </if>
       <if test="createdBy != null">
       and  created_by like CONCAT('%', #{createdBy,jdbcType=VARCHAR},'%')

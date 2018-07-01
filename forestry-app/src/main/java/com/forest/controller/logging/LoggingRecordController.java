@@ -45,7 +45,7 @@ public class LoggingRecordController {
 	  }
 	 
 	 @ResponseBody
-	 @RequestMapping(value="/queryRecordList.do")
+	 @RequestMapping(value="/queryRecordList.do",produces = "application/json; charset=utf-8")
 	 public String queryPlanList(@RequestParam(value="createdBy",required=false) String createdBy,
 			 @RequestParam(value="startAt",required=false) String startAt,
 			 @RequestParam(value="endAt",required=false) String endAt,
@@ -58,6 +58,7 @@ public class LoggingRecordController {
 			 queryParam.put("pageIndex",Integer.parseInt(pageIndex)*Integer.parseInt(pageSize));
 			 queryParam.put("pageSize",Integer.parseInt(pageSize));
 			 queryParam.put("isValid","1");
+			 queryParam.put("createdBy",createdBy);
 			 try {
 			 if(!StringUtils.isEmpty(startAt)){
 				 queryParam.put("startAt", new SimpleDateFormat("yyy-MM-dd HH:mm:ss").parse(startAt));
@@ -82,7 +83,7 @@ public class LoggingRecordController {
 	  * @return
 	  */
 	 @ResponseBody
-	 @RequestMapping(value = "/addRecord.do",method = RequestMethod.POST)
+	 @RequestMapping(value = "/addRecord.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
 	 public String addPlan(@RequestParam("data") String data) {
 		 BaseResultDTO resultDTO = new BaseResultDTO();
 		 try{
@@ -107,7 +108,7 @@ public class LoggingRecordController {
 	  * @return
 	  */
 	 @ResponseBody
-	 @RequestMapping(value="/updateRecord.do" ,method = RequestMethod.POST)
+	 @RequestMapping(value="/updateRecord.do" ,method = RequestMethod.POST,produces = "application/json; charset=utf-8")
 	 public String updatePlan(@RequestParam("data") String data) {
 		 BaseResultDTO resultDTO = new BaseResultDTO();
 		 try{
@@ -119,6 +120,7 @@ public class LoggingRecordController {
 				 return new Gson().toJson(resultDTO);
 			 }
 			 resultDTO = loggingRecordService.updateReocrd(dataDTO);
+			 resultDTO.setSucccess();
 			 return new Gson().toJson(resultDTO);
 		 }catch(Exception e){
 			 resultDTO.setError();
@@ -127,7 +129,7 @@ public class LoggingRecordController {
 	  }
 	 
 	 @ResponseBody
-	 @RequestMapping(value="/batchDelete.do",method = RequestMethod.POST)
+	 @RequestMapping(value="/batchDelete.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
 	 public String batchDelete(@RequestParam("ids") String ids) {
 		 BaseResultDTO resultDTO = new BaseResultDTO();
 		 if(StringUtils.isEmpty(ids)){
@@ -140,9 +142,8 @@ public class LoggingRecordController {
 	  }
 	 
 	 @ResponseBody
-	 @RequestMapping("/queryById.do")
+	 @RequestMapping(value="/queryById.do",produces = "application/json; charset=utf-8")
 	 public String queryById(@RequestParam(value="id") String id) {
-		 Map<String ,Object> queryParam = new HashMap<String ,Object>();
 		 LoggingRecordQueryReusltData resultDTO= new LoggingRecordQueryReusltData();
 		 
 		 try {
