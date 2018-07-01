@@ -77,11 +77,10 @@
     </fieldset>
     </div>
 </body>
-
 <div class = "mini-window"id="menuForm" style="width:20%;height:auto;display:none;">
 	<table style="width:100%;">
 		<tr>
-			<ul id="tree2" class="mini-tree" url="${pageContext.request.contextPath}/menuManager/list.do" style="width:200px;padding:5px;" 
+			<ul id="tree2" class="mini-tree" style="width:200px;padding:5px;" 
 		        checkRecursive="true" showTreeIcon="true" textField="text" idField="id" parentField="parentId" resultAsTree="false"  
 		        showCheckBox="true"   _checkOnTextClick="true" >
 		    </ul>
@@ -90,6 +89,7 @@
 	    	<td align="center"><a  class="mini-button" iconCls="icon-add" onclick="menuBand()">保存</a>
 	    </tr>
     </table>
+</div>
 </body>
 
 <script type="text/javascript">
@@ -138,6 +138,8 @@
 	}
 	
 	function menu() {
+		var tree = mini.get("tree2");
+		tree.load ( '${pageContext.request.contextPath}/menuManager/list.do ');	
 		var form = new mini.Form("#menuForm"); 
     	var rows = grid.getSelecteds();
     	var id = "";
@@ -146,18 +148,38 @@
     		return false;
     	}else{
     		menuField.show();
-    		var tree = mini.get("tree2");
-    	    var checkModel = new CheckModel(tree);
+    		
+    	    var rows = grid.getSelecteds();
+    	    $.ajax({
+    	        url: "${pageContext.request.contextPath}/roleManager/getMenuId.do",
+    	        type: "post",
+    	        data: {roleId:rows[0].roleId},
+    	        success: function (text) {
+    	        	tree.checkNodes ( text );
+    	        }
+    		})
     	}
     	
 	}
 	
 	function menuBand(){
-		alert("绑定成功！");
-		grid.reload();
-		menuField.hide();
 		var tree = mini.get("tree2");
-	    var checkModel = new CheckModel(tree);
+		var nodes = tree.getValue( true);
+		var rows = grid.getSelecteds();
+		
+		$.ajax({
+        	url: "${pageContext.request.contextPath}/roleManager/menuBand.do",
+        	data: { roleId: rows[0].roleId ,nodes: nodes},
+        	type: "post",
+        	success: function (text) {
+        		alert("绑定成功！");
+        		menuField.hide();
+            	grid.reload();
+       	 	},
+        	error: function (jqXHR, textStatus, errorThrown) {
+           		 alert(jqXHR.responseText);
+        	}
+    	});
 	}
 	function remove() {
     	var rows = grid.getSelecteds();

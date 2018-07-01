@@ -111,9 +111,11 @@
     	var endAt = mini.get("endAt").getFormValue();
     	var startDate = mini.get("startAt").getValue();
     	var endDate = mini.get("endAt").getValue();
-    	if(startDate>endDate){
-    		alert("查询截止日期不能大于开始日期！");
-    		return false;
+    	if(startAt!="" || endAt!=""){
+    		if(startDate>endDate){
+    			alert("查询截止日期不能大于开始日期！");
+    			return false;
+    		}
     	}
     	if(startAt!=""){
     		startAt +=" 00:00:00";
@@ -194,14 +196,14 @@
 		form.validate();
 		if (form.isValid() == false) return;
 		var data = form.getData();      //获取表单多个控件的数据
+		if(data.planId==""){
 		if(data.startTime!=""){
 			data.startTime=mini.get("startTime").getFormValue()+" 00:00:00";
 		}
 		if(data.endTime!=""){
 			data.endTime=mini.get("endTime").getFormValue()+" 23:59:59";
 		}
-		
-		if(data.planId==""){
+		data.isCheck=1;
 			var json = mini.encode(data);
     		$.ajax({
         		url: "${pageContext.request.contextPath}/loggingPlan/addPlan.do",

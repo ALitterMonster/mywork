@@ -19,9 +19,22 @@
     	SELECT t.role_id as id,t.role_name as text FROM operation_role t
     </select>
     
+    <select id="selcetTree" resultType="String" parameterType="String">
+    	SELECT t.menu_id  FROM operation_role_menu t where role_id = #{roleId}
+    </select>
+    
+    <select id="selcetRoleMenu" resultType="java.lang.Integer" parameterType="java.util.Map">
+    	SELECT t.f_id  FROM operation_role_menu t where role_id = #{roleId} and menu_id = #{menuId}
+    </select>
+    
     <!-- useGeneratedKeys设置为"true"表明要MyBatis获取由数据库自动生成的主键；keyProperty="id"指定把获取到的主键值注入到User的id属性 -->
 	<insert id="insertRoleInfo"  parameterType="OperationRole" useGeneratedKeys="true" keyProperty="roleId">
 		insert into operation_role(role_name,description,role_level) values (#{roleName},#{description},#{roleLevel});
+	</insert>
+	
+	<!-- role-menu绑定 -->
+	<insert id="insertRoleMenu"  parameterType="OperationRoleMenu" useGeneratedKeys="true" keyProperty="f_id">
+		insert into operation_role_menu (menu_id,role_id) values (#{menuId},#{roleId});
 	</insert>
 	
 	<update id="updateRoleInfo" parameterType="OperationRole">
@@ -30,6 +43,10 @@
 	
 	<delete id="deleteRoleInfo" parameterType="int">
 		delete from operation_role where role_id=#{roleId}
+	</delete>
+	
+	<delete id="removeRoleMenu" parameterType="int">
+		delete from operation_role_menu where f_id=#{fid}
 	</delete>
 
 

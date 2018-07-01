@@ -34,9 +34,11 @@ public class GeogController {
 
     @RequestMapping(value="list.do",produces = "application/json; charset=utf-8")
 	@ResponseBody
-    public String getList(@RequestParam(name="name",required=false) String name) {
+    public String getList(@RequestParam(name="name",required=false) String name,@RequestParam(name="type",required=false) String type) {
     	GeogInfo ou = new GeogInfo();
     	ou.setName(name);
+    	if(!StringUtils.isEmpty(type))
+    	ou.setType(Integer.parseInt(type));
 		List<GeogInfo> ulist = geogService.geogList(ou);
     	return new Gson().toJson(ulist);
     }

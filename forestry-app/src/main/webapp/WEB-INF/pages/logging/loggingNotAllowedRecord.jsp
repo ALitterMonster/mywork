@@ -63,17 +63,17 @@
             <table style="width:100%;">
                 <tr>
                     <td style="width:80px;">采伐单位：</td>
-                    <td style="width:150px;"><input id="createdBy" name="createdBy" class="mini-textbox" />
+                    <td style="width:150px;"><input id="createdBy" name="createdBy" class="mini-textbox" required="true"/>
                     <input id="recordId" name="recordId" class="mini-hidden" /></td>
                     <td style="width:80px;">采伐时间：</td>
-                    <td style="width:150px;"><input id="updatedAt" name="updatedAt" class="mini-datepicker" /></td>
+                    <td style="width:150px;"><input id="updatedAt" name="updatedAt" class="mini-datepicker" required="true"/></td>
                </tr>
                <tr>
                 <td style="width:80px;">采伐面积：</td>
                  <td align="left" colspan="1" style="width:150px;"><input id="area"
-					name="area" class="mini-textbox"  /> </td>
+					name="area" class="mini-textbox"  required="true"vtype="int" /> </td>
                     <td>采伐数量：</td>
-                    <td><input id="amout" name="amout" class="mini-textbox" /></td>
+                    <td><input id="amout" name="amout" class="mini-textbox" required="true"vtype="int" /></td>
                </tr>
                <tr>
                    
@@ -105,13 +105,21 @@
     	var createdBy = mini.get("createdBy_q").getValue();
     	var startAt = mini.get("startAt_q").getFormValue();
     	var endAt = mini.get("endAt_q").getFormValue();
+    	var startDate = mini.get("startAt_q").getValue();
+    	var endDate = mini.get("endAt_q").getValue();
+    	if(startAt!="" || endAt!=""){
+    		if(startDate>endDate){
+    			alert("查询截止日期不能大于开始日期！");
+    			return false;
+    		}
+    	}
     	if(startAt!=""){
     		startAt +=" 00:00:00";
     	}
     	if(endAt!=""){
     		endAt +=" 23:59:59";
     	}
-    	grid.load({createdBy:createdBy,startAt:startAt,endAt:endAt,isLegal:1});
+    	grid.load({createdBy:createdBy,startAt:startAt,endAt:endAt,isLegal:0});
 	}
 	function add() {
 		var form = new mini.Form("#editForm"); 
@@ -133,7 +141,8 @@
         	data: { id: id },
         	type: "get",
         	success: function (data) {
-            	editField.show();
+            	var result = mini.decode(data);
+        		editField.show();
             	var form = new mini.Form("#editForm");  
             	var result = mini.decode(data);
             	form.setData(result.data);
@@ -161,8 +170,14 @@
         	data: { ids: ids },
         	type: "post",
         	success: function (text) {
-        	alert("操作成功");
-            	grid.reload();
+        		var result = mini.decode(data);
+        		if(result!=null && result.code=="0000"){
+        			alert("操作成功");
+            		grid.reload();
+            	}else{
+            		alert(result.message);
+            		editField.hide();
+            	}
        	 	},
         	error: function (jqXHR, textStatus, errorThrown) {
            		 alert(jqXHR.responseText);
@@ -173,6 +188,8 @@
 	function save() {
 		var form = new mini.Form("#editForm");            
 		var data = form.getData();      //获取表单多个控件的数据
+		var data = form.getData();      //获取表单多个控件的数据
+		form.validate();
 		if(data.updatedAt!=""){
 			data.updatedAt=mini.get("updatedAt").getFormValue()+" 00:00:00";
 		}
@@ -184,10 +201,16 @@
         		data: { data: json },
         		type: "post",
         		success: function (text) {
-        		alert("操作成功");
-            		grid.reload();
-            		form.clear();
-            		editField.hide();
+        			var result = mini.decode(data);
+        			if(result!=null && result.code=="0000"){
+        				alert("操作成功");
+            			grid.reload();
+            			form.clear();
+            			editField.hide();
+            		}else{
+            			alert(data.message);
+            			editField.hide();
+            		}
         		},
         		error: function (error) {
             		alert(mini.encode(error));
@@ -203,10 +226,17 @@
         		data: { data: json },
         		type: "post",
         		success: function (text) {
-        			alert("操作成功");
-            		grid.reload();
-            		form.clear();
-            		editField.hide();
+        			var result = mini.decode(data);
+        			if(result!=null && result.code=="0000"){
+        				alert("操作成功");
+            			grid.reload();
+            			form.clear();
+            			editField.hide();
+            		}else{
+            			alert(result.message);
+            			form.clear();
+            			editField.hide();
+            		}
         		},
         		error: function (error) {
             		alert(mini.encode(error));

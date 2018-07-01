@@ -106,9 +106,11 @@
     	var endAt = mini.get("endAt_q").getFormValue();
     	var startDate = mini.get("startAt_q").getValue();
     	var endDate = mini.get("endAt_q").getValue();
-    	if(startDate>endDate){
-    		alert("查询截止日期不能大于开始日期！");
-    		return false;
+    	if(startAt!="" || endAt!=""){
+    		if(startDate>endDate){
+    			alert("查询截止日期不能大于开始日期！");
+    			return false;
+    		}
     	}
     	if(startAt!=""){
     		startAt +=" 00:00:00";
