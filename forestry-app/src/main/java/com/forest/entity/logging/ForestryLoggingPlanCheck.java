@@ -23,6 +23,9 @@ public class ForestryLoggingPlanCheck {
 
     private String version;
     
+    private String planName;
+    
+    
     private ForestryLoggingPlan forestryLoggingPlan;
     
     public ForestryLoggingPlan getForestryLoggingPlan() {

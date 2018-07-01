@@ -37,9 +37,15 @@ public class ProductController {
 	 public String planList() {
 	    return "product/product";
 	  }
+	 
+	 @RequestMapping(value="/otherProdect.do",method = RequestMethod.GET)
+	 public String productList() {
+	    return "product/otherProduct";
+	  }
 	 @ResponseBody
-	 @RequestMapping("/queryProductList.do")
+	 @RequestMapping(value="/queryProductList.do",produces = "application/json; charset=utf-8")
 	 public String queryPlanList(@RequestParam(value="productName",required=false) String productName,
+			 @RequestParam(value="type",required=false) String type,
 			 @RequestParam(value="pageIndex",required=false) String pageIndex,
 			 @RequestParam(value="pageSize",required=false) String pageSize) {
 		 Map<String ,Object> queryParam = new HashMap<String ,Object>();
@@ -47,6 +53,7 @@ public class ProductController {
 		 queryParam.put("pageIndex",Integer.parseInt(pageIndex)*Integer.parseInt(pageSize));
 		 queryParam.put("pageSize",Integer.parseInt(pageSize));
 		 queryParam.put("isValid","1");
+		 queryParam.put("type",type);
 		 try {
 		 if(!StringUtils.isEmpty(productName)){
 			 queryParam.put("productName",productName);
@@ -60,7 +67,7 @@ public class ProductController {
 		 return new Gson().toJson(resultDTO);
 	  }
 	 @ResponseBody
-	 @RequestMapping("/queryById.do")
+	 @RequestMapping(value="/queryById.do",produces = "application/json; charset=utf-8")
 	 public String queryById(@RequestParam(value="id") String id) {
 		 Map<String ,Object> queryParam = new HashMap<String ,Object>();
 		 ProductQueryReusltData resultDTO= new ProductQueryReusltData();
@@ -83,7 +90,7 @@ public class ProductController {
 	  * @return
 	  */
 	 @ResponseBody
-	 @RequestMapping(value="/add.do",method = RequestMethod.POST)
+	 @RequestMapping(value="/add.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
 	 public String addPlan(@RequestParam("data") String data) {
 		 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); 
 		 ForestryProductInfo dto = gson.fromJson(data, ForestryProductInfo.class);
@@ -94,7 +101,7 @@ public class ProductController {
 	  }
 	 
 	 @ResponseBody
-	 @RequestMapping(value="/batchDelete.do",method = RequestMethod.POST)
+	 @RequestMapping(value="/batchDelete.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
 	 public String batchDelete(@RequestParam("ids") String ids) {
 		 BaseResultDTO resultDTO = new BaseResultDTO();
 		 if(StringUtils.isEmpty(ids)){
@@ -112,7 +119,7 @@ public class ProductController {
 	  * @return
 	  */
 	 @ResponseBody
-	 @RequestMapping(value="/update.do",method = RequestMethod.POST)
+	 @RequestMapping(value="/update.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
 	 public String update(@RequestParam("data") String data) {
 		 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); 
 		 ForestryProductInfo dto = gson.fromJson(data, ForestryProductInfo.class);
@@ -126,34 +133,17 @@ public class ProductController {
 	  }
 	 
 	 @ResponseBody
-	 @RequestMapping(value="/addProduct.do",method = RequestMethod.POST)
+	 @RequestMapping(value="/addProduct.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
 	 public String addProduct(@RequestParam("data") String data) {
 		 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); 
 		 ForestryProductHistory dto = gson.fromJson(data, ForestryProductHistory.class);
 		 BaseResultDTO resultDTO = new BaseResultDTO();
-		 if(StringUtils.isEmpty(dto.getId().toString())){
+		 if(StringUtils.isEmpty(dto.getProductId().toString())){
 			 resultDTO.setParamError();
 			 return new Gson().toJson(resultDTO);
 		 }
 		 resultDTO = productHisService.insert(dto);
 		 return new Gson().toJson(resultDTO);
 	  }
-	 
-	 @ResponseBody
-	 @RequestMapping(value="/deleteProduct.do",method = RequestMethod.POST)
-	 public String deleteProduct(@RequestParam("data") String data) {
-		 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); 
-		 ForestryProductHistory dto = gson.fromJson(data, ForestryProductHistory.class);
-		 BaseResultDTO resultDTO = new BaseResultDTO();
-		 if(StringUtils.isEmpty(dto.getId().toString())){
-			 resultDTO.setParamError();
-			 return new Gson().toJson(resultDTO);
-		 }
-		 
-		 resultDTO = productHisService.insert(dto);
-		 ForestryProductInfo productInfo = new ForestryProductInfo();
-		 productInfo.setId(dto.getProductId());
-		 productInfo.setAmount(amount);
-		 return new Gson().toJson(resultDTO);
-	  }
+	
 }

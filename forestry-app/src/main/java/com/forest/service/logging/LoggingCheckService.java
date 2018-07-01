@@ -45,7 +45,7 @@ public class LoggingCheckService {
 		return resultDTO;
 	}
 	
-	public BaseResultDTO updateReocrd(ForestryLoggingPlanCheck check){
+	public BaseResultDTO updateCheck(ForestryLoggingPlanCheck check){
 		BaseResultDTO resultDTO = new BaseResultDTO();
 		int result = forestryLoggingPlanCheckMapper.updateByPrimaryKeySelective(check);
 		if(result>0){
@@ -55,31 +55,15 @@ public class LoggingCheckService {
 		}
 		return resultDTO;
 	}
-	public BaseResultDTO batchDelete(String ids){
-		BaseResultDTO resultDTO = new BaseResultDTO();
-		resultDTO.setSucccess();
-		String[] idsList = ids.split(",");
-		for(String id :idsList){
-			ForestryLoggingPlanCheck check = new ForestryLoggingPlanCheck();
-			check.setId(new Integer(id));
-			check.setIsValid("0");
-			check.setUpdatedAt(new Date());
-			int result = forestryLoggingPlanCheckMapper.updateByPrimaryKeySelective(check);
-			if(result==0){
-				resultDTO.setError();
-				return resultDTO;
-			}
-		}
-		return resultDTO;
-	}
+
 	
 	public LoggingPlanCheckQueryReusltDTO queryList(Map<String,Object> map){
 		LoggingPlanCheckQueryReusltDTO resultDTO = new LoggingPlanCheckQueryReusltDTO();
 		resultDTO.setSucccess();
-		int count = forestryLoggingPlanCheckMapper.getLoggingPlanCheckCount(map);
+		int count = forestryLoggingPlanCheckMapper.getCheckCount(map);
 		resultDTO.setTotal(new Long(count));
 		if(count>0){
-			List<ForestryLoggingPlanCheck> list =forestryLoggingPlanCheckMapper.queryPlanCheckListPage(map);
+			List<ForestryLoggingPlanCheck> list =forestryLoggingPlanCheckMapper.queryList(map);
 			resultDTO.setData(list);
 		}
 		return resultDTO;

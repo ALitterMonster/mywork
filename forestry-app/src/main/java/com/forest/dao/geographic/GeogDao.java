@@ -9,6 +9,7 @@ public interface GeogDao {
 	public List<GeogInfo> getGeogList(int userId);
 	
 	public List<GeogInfo> geogList(GeogInfo u);
+	public int  getCount(GeogInfo u);
 	
 	public void insertGeogInfo(GeogInfo u);
  

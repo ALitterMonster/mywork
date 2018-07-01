@@ -44,22 +44,22 @@ public class PreventionController {
 	 }
 	 
 	 @ResponseBody
-	 @RequestMapping("/queryFireRecordList.do")
-	 public String queryFireRecordList(@RequestParam(value="occurTime",required=false) String occurTime,
-			 @RequestParam(value="dealTime",required=false) String dealTime,
+	 @RequestMapping(value="/queryFireRecordList.do",produces = "application/json; charset=utf-8")
+	 public String queryFireRecordList(@RequestParam(value="occurTimeStart",required=false) String occurTimeStart,
+			 @RequestParam(value="occurTimeEnd",required=false) String occurTimeEnd,
 			 @RequestParam(value="affectedArea",required=false) String affectedArea,
 			 @RequestParam(value="pageIndex",required=false) String pageIndex,
 			 @RequestParam(value="pageSize",required=false) String pageSize) {
 		 Map<String ,Object> queryParam = new HashMap<String ,Object>();
 		 FireRecordQueryReusltDTO resultDTO= new FireRecordQueryReusltDTO();
-		 queryParam.put("pageIndex",Integer.parseInt(pageIndex)*Integer.parseInt(pageSize));
+		 queryParam.put("pageIndex",Integer.parseInt(pageIndex));
 		 queryParam.put("pageSize",Integer.parseInt(pageSize));
 		 try {
-		 if(!StringUtils.isEmpty(occurTime)){
-			 queryParam.put("occurTime", new SimpleDateFormat("yyy-MM-dd HH:mm:ss").parse(occurTime));
+		 if(!StringUtils.isEmpty(occurTimeStart)){
+			 queryParam.put("occurTimeStart", new SimpleDateFormat("yyy-MM-dd HH:mm:ss").parse(occurTimeStart));
 		 }
-		 if(!StringUtils.isEmpty(dealTime)){
-			queryParam.put("dealTime", new SimpleDateFormat("yyy-MM-dd HH:mm:ss").parse(dealTime));
+		 if(!StringUtils.isEmpty(occurTimeEnd)){
+			queryParam.put("occurTimeEnd", new SimpleDateFormat("yyy-MM-dd HH:mm:ss").parse(occurTimeEnd));
 		 }
 		 if(!StringUtils.isEmpty(affectedArea)){
 			 queryParam.put("affectedArea",affectedArea);
@@ -74,7 +74,7 @@ public class PreventionController {
 	  }
 	 
 	 @ResponseBody
-	 @RequestMapping("/queryFireRecordById.do")
+	 @RequestMapping(value="/queryFireRecordById.do",produces = "application/json; charset=utf-8")
 	 public String queryFireRecordById(@RequestParam(value="id") String id) {
 		 Map<String ,Object> queryParam = new HashMap<String ,Object>();
 		 FireRecordQueryReusltData resultDTO= new FireRecordQueryReusltData();
@@ -98,7 +98,7 @@ public class PreventionController {
 	  * @return
 	  */
 	 @ResponseBody
-	 @RequestMapping(value="/addFireRecord.do",method = RequestMethod.POST)
+	 @RequestMapping(value="/addFireRecord.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
 	 public String addPlan(@RequestParam("fireRecord") String fireRecord) {
 		 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); 
 		 ForestryFireRecord record = gson.fromJson(fireRecord, ForestryFireRecord.class);
@@ -149,7 +149,7 @@ public class PreventionController {
 	 * 防火检查记录管理页面
 	 * @return
 	 */
-	 @RequestMapping(value="/firePreventionRecordList.do",method = RequestMethod.GET)
+	 @RequestMapping(value="/firePreventionRecordList.do",method = RequestMethod.GET,produces = "application/json; charset=utf-8")
 	 public String firePreventionRecordList() {
 	    return "prevention/firePreventionRecordList";
 	  }
@@ -157,8 +157,9 @@ public class PreventionController {
 	 @ResponseBody
 	 @RequestMapping("/queryFirePreventionRecordList.do")
 	 public String queryFirePreventionRecordList(@RequestParam(value="preventionResult",required=false) String preventionResult,
-			 @RequestParam(value="preventionTime",required=false) String preventionTime,
 			 @RequestParam(value="preventionArea",required=false) String preventionArea,
+			 @RequestParam(value="preventionTimeStart",required=false) String preventionTimeStart,
+			 @RequestParam(value="preventionTimeEnd",required=false) String preventionTimeEnd,
 			 @RequestParam(value="pageIndex",required=false) String pageIndex,
 			 @RequestParam(value="pageSize",required=false) String pageSize) {
 		 Map<String ,Object> queryParam = new HashMap<String ,Object>();
@@ -166,8 +167,11 @@ public class PreventionController {
 		 queryParam.put("pageIndex",Integer.parseInt(pageIndex));
 		 queryParam.put("pageSize",Integer.parseInt(pageSize));
 		 try {
-		 if(!StringUtils.isEmpty(preventionTime)){
-			 queryParam.put("preventionTime", new SimpleDateFormat("yyy-MM-dd HH:mm:ss").parse(preventionTime));
+		 if(!StringUtils.isEmpty(preventionTimeStart)){
+			 queryParam.put("preventionTimeStart", new SimpleDateFormat("yyy-MM-dd HH:mm:ss").parse(preventionTimeStart));
+		 }
+		 if(!StringUtils.isEmpty(preventionTimeStart)){
+			 queryParam.put("preventionTimeEnd", new SimpleDateFormat("yyy-MM-dd HH:mm:ss").parse(preventionTimeEnd));
 		 }
 		 if(!StringUtils.isEmpty(preventionArea)){
 			 queryParam.put("preventionArea",preventionArea);
@@ -185,7 +189,7 @@ public class PreventionController {
 	  }
 	 
 	 @ResponseBody
-	 @RequestMapping("/queryFirePreventionRecordById.do")
+	 @RequestMapping(value="/queryFirePreventionRecordById.do",produces = "application/json; charset=utf-8")
 	 public String queryFirePreventionRecordById(@RequestParam(value="id") String id) {
 		 Map<String ,Object> queryParam = new HashMap<String ,Object>();
 		 FirePreventionRecordQueryReusltData resultDTO= new FirePreventionRecordQueryReusltData();

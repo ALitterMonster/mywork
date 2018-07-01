@@ -10,7 +10,7 @@
     <result column="version" jdbcType="INTEGER" property="version" />
     <result column="is_valid" jdbcType="VARCHAR" property="isValid" />
     <result column="product_name" jdbcType="VARCHAR" property="productName" />
-    <result column="amount" jdbcType="BIGINT" property="amount" />
+    <result column="amount" jdbcType="DOUBLE" property="amount" />
     <result column="unit" jdbcType="VARCHAR" property="unit" />
     <result column="type" jdbcType="VARCHAR" property="type" />
   </resultMap>
@@ -33,7 +33,7 @@
      and   is_valid = #{isValid,jdbcType=VARCHAR}
       </if>
       <if test="productName != null">
-      and  product_name = #{productName,jdbcType=VARCHAR}
+      and  product_name like CONCAT('%', #{productName,jdbcType=VARCHAR},'%')
       </if>
       <if test="type != null">
       and  type = #{type,jdbcType=VARCHAR}
@@ -49,7 +49,7 @@
      and   is_valid = #{isValid,jdbcType=VARCHAR}
       </if>
       <if test="productName != null">
-      and  product_name = #{productName,jdbcType=VARCHAR}
+      and  product_name like CONCAT('%', #{productName,jdbcType=VARCHAR},'%')
       </if>
        <if test="type != null">
       and  type = #{type,jdbcType=VARCHAR}
@@ -69,7 +69,7 @@
       unit, type)
     values (#{id,jdbcType=INTEGER}, #{createdAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
       #{updatedAt,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
-      #{isValid,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{amount,jdbcType=BIGINT}, 
+      #{isValid,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{amount,jdbcType=DOUBLE}, 
       #{unit,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.forest.entity.product.ForestryProductInfo">
@@ -135,7 +135,7 @@
         #{productName,jdbcType=VARCHAR},
       </if>
       <if test="amount != null">
-        #{amount,jdbcType=BIGINT},
+        #{amount,jdbcType=DOUBLE},
       </if>
       <if test="unit != null">
         #{unit,jdbcType=VARCHAR},
@@ -170,7 +170,7 @@
         product_name = #{productName,jdbcType=VARCHAR},
       </if>
       <if test="amount != null">
-        amount = #{amount,jdbcType=BIGINT},
+        amount = amount+#{amount,jdbcType=DOUBLE},
       </if>
       <if test="unit != null">
         unit = #{unit,jdbcType=VARCHAR},
@@ -190,7 +190,7 @@
       version = #{version,jdbcType=INTEGER},
       is_valid = #{isValid,jdbcType=VARCHAR},
       product_name = #{productName,jdbcType=VARCHAR},
-      amount = #{amount,jdbcType=BIGINT},
+      amount = #{amount,jdbcType=DOUBLE},
       unit = #{unit,jdbcType=VARCHAR},
       type = #{type,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}

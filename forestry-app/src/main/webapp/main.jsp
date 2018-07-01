@@ -8,6 +8,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 %> 
 <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <script src="resource/scripts/boot.js" type="text/javascript"></script>
 	<link href="resource/res/third-party/scrollbar/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css" />
 	<script src="resource/res/third-party/scrollbar/jquery.mCustomScrollbar.concat.min.js" type="text/javascript"></script>
@@ -17,6 +18,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <link href="resource/frame/tabs.css" rel="stylesheet" type="text/css" />
     <link href="resource/frame/frame.css" rel="stylesheet" type="text/css" />
     <link href="resource/frame/index.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=108f1c8fbfd0786ece51f8e31e3f73f4"></script>
 <title>主页</title>
 </head>
 <body>
@@ -28,6 +30,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
     <ul class="nav navbar-nav">
         <li><a id="toggle"><span class="fa fa-bars" ></span></a></li>
+    </ul>
+    <ul style="margin-right:150px;padding-top:20px;" class="nav navbar-nav navbar-right">
+    	
+    	<li id="nowaddr"></li>
+
     </ul>
     <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
@@ -54,7 +61,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div id="mainTabs" class="mini-tabs main-tabs" activeIndex="0" style="height:100%;" plain="false"
              buttons="#tabsButtons" arrowPosition="side" >
             <div name="index" iconCls="fa-android" title="控制台">
-                欢迎来到林业管理系统
+                <div id="allmap" style="width:auto;height:auto;"></div>
             </div>
         </div>
     </div>
@@ -113,7 +120,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             url: "${pageContext.request.contextPath}/menus.do",
             type: "post",
             success: function (text) {
-                menu.loadData(text);
+                menu.loadData(mini.decode(text));
             }
         })
 
@@ -143,4 +150,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	window.location = "${pageContext.request.contextPath}";
     }
 
+ // 百度地图API功能
+ 	var map = new BMap.Map("allmap"); //初始化地图类
+	var geolocation = new BMap.Geolocation();
+	geolocation.enableSDKLocation();
+	geolocation.getCurrentPosition(function(r){
+		if(this.getStatus() == BMAP_STATUS_SUCCESS){
+			var mk = new BMap.Marker(r.point);
+			var gc = new BMap.Geocoder();  //初始化，Geocoder类
+			gc.getLocation(r.point, function (rs) {   //getLocation函数用来解析地址信息，分别返回省市区街等
+			    var addComp = rs.addressComponents;
+			    province = addComp.province;//获取省份
+			    city = addComp.city;//获取城市
+			    district = addComp.district;//区
+			    street = addComp.street;//街
+			    $("#nowaddr").html("当前位置:"+city+","+district+","+street);
+			});
+			
+		}else {
+			alert('获取位置失败：'+this.getStatus());
+		}        
+	},{enableHighAccuracy: true})
+ 
 </script>

@@ -26,6 +26,8 @@ public class ProductHisService {
 
 	@Autowired 
 	private ForestryProductHistoryMapper forestryProductHistoryMapper;
+	@Autowired 
+	private ForestryProductInfoMapper forestryProductInfoMapper;
 	
 	public BaseResultDTO insert(ForestryProductHistory history){
 		history.setCreatedAt(new Date());
@@ -38,7 +40,15 @@ public class ProductHisService {
 		BaseResultDTO resultDTO = new BaseResultDTO();
 		int result = forestryProductHistoryMapper.insert(history);
 		
-		if(result>0){
+		ForestryProductInfo product = new ForestryProductInfo();
+		product.setId(history.getProductId());
+		if("1".equals(history.getType())){
+			product.setAmount(history.getAmount());
+		}else{
+			product.setAmount(history.getAmount()*(-1));
+		}
+		int updateResult = forestryProductInfoMapper.updateByPrimaryKeySelective(product);
+		if(result>0 && updateResult>0){
 			resultDTO.setSucccess();
 		}else{
 			resultDTO.setError();

@@ -17,7 +17,9 @@
             </td>
             <td>类型：</td>
             <td>
-                <input id="type" name="type" class="mini-combobox" style="width:150px;" textField="text" valueField="id" data="[{id:2,text:'湿地'},{id:1,text:'林产品种植'},{id:0,text:'其他'}]" value="" showNullItem="true" allowInput="true" required="true"/>
+                <input id="type" name="type" class="mini-combobox" style="width:150px;" textField="text" 
+                valueField="id" data="[{id:2,text:'湿地'},{id:1,text:'林产品种植'},{id:0,text:'其他'}]" value="" 
+                showNullItem="true" allowInput="true" required="true"/>
             </td>
             <td>                
             	<a class="mini-button" iconCls="icon-save" onclick="queryList()">查询</a>

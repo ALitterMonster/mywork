@@ -82,7 +82,7 @@
     insert into forestry_product_history (id, created_at, created_by, 
       updated_at, updated_by, version, 
       is_valid, amount, type, 
-      origin)
+      origin,product_id)
     values (#{id,jdbcType=INTEGER}, #{createdAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
       #{updatedAt,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, 
       #{isValid,jdbcType=VARCHAR}, #{amount,jdbcType=DOUBLE}, #{type,jdbcType=VARCHAR}, 

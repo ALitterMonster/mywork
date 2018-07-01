@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.forest.dto.geoinfo.GeoInfoQueryResultDTO;
 import com.forest.entity.geographic.GeogInfo;
 import com.forest.service.geographic.GeogService;
 import com.google.gson.Gson;
@@ -34,13 +35,18 @@ public class GeogController {
 
     @RequestMapping(value="list.do",produces = "application/json; charset=utf-8")
 	@ResponseBody
-    public String getList(@RequestParam(name="name",required=false) String name,@RequestParam(name="type",required=false) String type) {
+    public String getList(@RequestParam(name="name",required=false) String name,
+    		@RequestParam(name="type",required=false) String type,
+    		@RequestParam(value="pageIndex",required=false) String pageIndex,
+			 @RequestParam(value="pageSize",required=false) String pageSize) {
     	GeogInfo ou = new GeogInfo();
+    	ou.setPageIndex(Integer.parseInt(pageIndex)*Integer.parseInt(pageSize));
+    	ou.setPageSize(Integer.parseInt(pageSize));
     	ou.setName(name);
     	if(!StringUtils.isEmpty(type))
     	ou.setType(Integer.parseInt(type));
-		List<GeogInfo> ulist = geogService.geogList(ou);
-    	return new Gson().toJson(ulist);
+		GeoInfoQueryResultDTO resultDTO = geogService.geogList(ou);
+    	return new Gson().toJson(resultDTO);
     }
     
     @RequestMapping(value="save.do",produces = "application/json; charset=utf-8")

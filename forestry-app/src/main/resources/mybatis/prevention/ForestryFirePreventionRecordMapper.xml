@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.forest.dao.prevention.ForestryFirePreventionRecordMapper">
-  <resultMap id="fireResultMap" type="com.forest.entity.prevention.ForestryFirePreventionRecord">
+  <resultMap id="BaseResultMap" type="com.forest.entity.prevention.ForestryFirePreventionRecord">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
@@ -17,7 +17,7 @@
     id, created_at, created_by, updated_at, updated_by, version, prevention_area, prevention_time, 
     prevention_result, risk_level
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="fireResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from forestry_fire_prevention_record
@@ -46,14 +46,17 @@
       <if test="preventionArea != null">
        and prevention_area like CONCAT('%', #{preventionArea,jdbcType=VARCHAR},'%')
       </if>
-      <if test="preventionTime != null">
-        and prevention_time = #{preventionTime,jdbcType=TIMESTAMP}
+      <if test="preventionTimeStart != null">
+        and prevention_time > #{preventionTimeStart,jdbcType=TIMESTAMP}
+      </if>
+      <if test="preventionTimeEnd != null">
+        and prevention_time &lt;= #{preventionTimeEnd,jdbcType=TIMESTAMP}
       </if>
       <if test="preventionResult != null">
        and prevention_result like CONCAT('%', #{preventionResult,jdbcType=VARCHAR},'%')
       </if>
       </select>
-  <select id="queryRecordListPage" parameterType="java.util.Map" resultMap="fireResultMap">
+  <select id="queryRecordListPage" parameterType="java.util.Map" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from forestry_fire_prevention_record
@@ -73,8 +76,11 @@
       <if test="preventionArea != null">
        and prevention_area like CONCAT('%', #{preventionArea,jdbcType=VARCHAR},'%')
       </if>
-      <if test="preventionTime != null">
-        and prevention_time = #{preventionTime,jdbcType=TIMESTAMP}
+        <if test="preventionTimeStart != null">
+        and prevention_time > #{preventionTimeStart,jdbcType=TIMESTAMP}
+      </if>
+      <if test="preventionTimeEnd != null">
+        and prevention_time &lt;= #{preventionTimeEnd,jdbcType=TIMESTAMP}
       </if>
       <if test="preventionResult != null">
        and prevention_result like CONCAT('%', #{preventionResult,jdbcType=VARCHAR},'%')
@@ -96,7 +102,7 @@
     values (  #{id,jdbcType=INTEGER},#{createdAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
       #{updatedAt,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, 
       #{preventionArea,jdbcType=VARCHAR}, #{preventionTime,jdbcType=TIMESTAMP}, #{preventionResult,jdbcType=VARCHAR}, 
-      #{riskLevel,jdbcType=INTEGER}
+      #{riskLevel,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.forest.dao.prevention.ForestryFirePreventionRecordMapper" keyProperty="id" useGeneratedKeys="true">
   	
@@ -161,7 +167,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.forest.dao.prevention.ForestryFirePreventionRecordMapper">
+  <update id="updateByPrimaryKeySelective" parameterType="com.forest.entity.prevention.ForestryFirePreventionRecord">
     update forestry_fire_prevention_record
     <set>
       <if test="createdAt != null">
@@ -192,7 +198,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.forest.dao.prevention.ForestryFirePreventionRecordMapper">
+  <update id="updateByPrimaryKey" parameterType="com.forest.entity.prevention.ForestryFirePreventionRecord">
     update forestry_fire_prevention_record
     set created_at = #{createdAt,jdbcType=TIMESTAMP},
       created_by = #{createdBy,jdbcType=VARCHAR},

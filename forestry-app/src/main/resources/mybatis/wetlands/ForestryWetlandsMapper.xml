@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.forest.dao.wetlands.ForestryWetlandsMapper">
+  <resultMap id="wetResultMap" type="com.forest.entity.wetlands.ForestryWetlands">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="updated_by" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+    <result column="period_start" jdbcType="TIMESTAMP" property="periodStart" />
+    <result column="period_end" jdbcType="TIMESTAMP" property="periodEnd" />
+    <result column="passenger_flow" jdbcType="VARCHAR" property="passengerFlow" />
+    <result column="vegetation_coverage" jdbcType="VARCHAR" property="vegetationCoverage" />
+    <result column="animal_species" jdbcType="VARCHAR" property="animalSpecies" />
+    <result column="plant_species" jdbcType="VARCHAR" property="plantSpecies" />
+    <result column="area" jdbcType="VARCHAR" property="area" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, created_at, created_by, updated_at, updated_by, version, period_start, period_end, 
+    passenger_flow, vegetation_coverage, animal_species, plant_species, area, name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="wetResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from forestry_wetlands
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getCount" parameterType="java.util.Map" resultType="int">
+    select 
+    count(*)
+    from forestry_wetlands
+    where 1=1
+     <if test="createdAt != null">
+       and created_at = #{createdAt,jdbcType=DATETIME}
+     </if>
+     <if test="createdBy != null">
+      and  created_by = #{createdBy,jdbcType=VARCHAR}
+     </if>
+     <if test="updatedAt != null">
+       and updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+     </if>
+     <if test="updatedBy != null">
+      and updated_by = #{updatedBy,jdbcType=VARCHAR}
+     </if>
+     <if test="periodStart != null">
+       and period_start > #{periodStart,jdbcType=TIMESTAMP}
+     </if>
+     <if test="periodEnd != null">
+       and period_end  &lt;=  #{periodEnd,jdbcType=TIMESTAMP}
+     </if>
+      <if test="name != null">
+       and name like CONCAT('%', #{name,jdbcType=VARCHAR},'%')
+     </if>
+      <if test="area != null">
+       and area like CONCAT('%', #{area,jdbcType=VARCHAR},'%')
+     </if>
+  </select>
+  <select id="queryListPage" parameterType="java.util.Map" resultMap="wetResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from forestry_wetlands
+    where 1=1
+     <if test="createdAt != null">
+       and created_at = #{createdAt,jdbcType=DATETIME}
+     </if>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+     <if test="createdBy != null">
+      and created_by = #{createdBy,jdbcType=VARCHAR}
+     </if>
+     <if test="updatedAt != null">
+       and updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+     </if>
+     <if test="updatedBy != null">
+       and updated_by = #{updatedBy,jdbcType=VARCHAR}
+     </if>
+     <if test="name != null">
+       and name  like CONCAT('%', #{name,jdbcType=VARCHAR},'%')
+     </if>
+     <if test="area != null">
+       and area like CONCAT('%', #{area,jdbcType=VARCHAR},'%')
+     </if>
+     <if test="periodStart != null">
+       and period_start > #{periodStart,jdbcType=TIMESTAMP}
+     </if>
+     <if test="periodEnd != null">
+       and period_start &lt;= #{periodEnd,jdbcType=TIMESTAMP}
+     </if>
+      limit #{pageIndex,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from forestry_wetlands
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.forest.entity.wetlands.ForestryWetlands">
+    insert into forestry_wetlands (id, created_at, created_by, 
+      updated_at, updated_by, version, 
+      period_start, period_end, passenger_flow, 
+      vegetation_coverage, animal_species, plant_species, 
+      area, name)
+    values (#{id,jdbcType=INTEGER}, #{createdAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
+      #{updatedAt,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
+      #{periodStart,jdbcType=TIMESTAMP}, #{periodEnd,jdbcType=TIMESTAMP}, #{passengerFlow,jdbcType=VARCHAR}, 
+      #{vegetationCoverage,jdbcType=VARCHAR}, #{animalSpecies,jdbcType=VARCHAR}, #{plantSpecies,jdbcType=VARCHAR}, 
+      #{area,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.forest.entity.wetlands.ForestryWetlands">
+    insert into forestry_wetlands
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+      <if test="updatedBy != null">
+        updated_by,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="periodStart != null">
+        period_start,
+      </if>
+      <if test="periodEnd != null">
+        period_end,
+      </if>
+      <if test="passengerFlow != null">
+        passenger_flow,
+      </if>
+      <if test="vegetationCoverage != null">
+        vegetation_coverage,
+      </if>
+      <if test="animalSpecies != null">
+        animal_species,
+      </if>
+      <if test="plantSpecies != null">
+        plant_species,
+      </if>
+      <if test="area != null">
+        area,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
+      </if>
+      <if test="periodStart != null">
+        #{periodStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="periodEnd != null">
+        #{periodEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="passengerFlow != null">
+        #{passengerFlow,jdbcType=VARCHAR},
+      </if>
+      <if test="vegetationCoverage != null">
+        #{vegetationCoverage,jdbcType=VARCHAR},
+      </if>
+      <if test="animalSpecies != null">
+        #{animalSpecies,jdbcType=VARCHAR},
+      </if>
+      <if test="plantSpecies != null">
+        #{plantSpecies,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.forest.entity.wetlands.ForestryWetlands">
+    update forestry_wetlands
+    <set>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        updated_by = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="periodStart != null">
+        period_start = #{periodStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="periodEnd != null">
+        period_end = #{periodEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="passengerFlow != null">
+        passenger_flow = #{passengerFlow,jdbcType=VARCHAR},
+      </if>
+      <if test="vegetationCoverage != null">
+        vegetation_coverage = #{vegetationCoverage,jdbcType=VARCHAR},
+      </if>
+      <if test="animalSpecies != null">
+        animal_species = #{animalSpecies,jdbcType=VARCHAR},
+      </if>
+      <if test="plantSpecies != null">
+        plant_species = #{plantSpecies,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.forest.entity.wetlands.ForestryWetlands">
+    update forestry_wetlands
+    set created_at = #{createdAt,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      updated_by = #{updatedBy,jdbcType=VARCHAR},
+      version = #{version,jdbcType=INTEGER},
+      period_start = #{periodStart,jdbcType=TIMESTAMP},
+      period_end = #{periodEnd,jdbcType=TIMESTAMP},
+      passenger_flow = #{passengerFlow,jdbcType=VARCHAR},
+      vegetation_coverage = #{vegetationCoverage,jdbcType=VARCHAR},
+      animal_species = #{animalSpecies,jdbcType=VARCHAR},
+      plant_species = #{plantSpecies,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

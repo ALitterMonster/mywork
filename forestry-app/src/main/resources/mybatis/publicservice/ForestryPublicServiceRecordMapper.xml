@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.forest.dao.publicservice.ForestryPublicServiceRecordMapper">
+  <resultMap id="BaseResultMap" type="com.forest.entity.publicservice.ForestryPublicServiceRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="updated_by" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+    <result column="tree_species" jdbcType="VARCHAR" property="treeSpecies" />
+    <result column="planting_time" jdbcType="TIMESTAMP" property="plantingTime" />
+    <result column="tree_num" jdbcType="INTEGER" property="treeNum" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="donation_time" jdbcType="TIMESTAMP" property="donationTime" />
+    <result column="tree_unit_price" jdbcType="DECIMAL" property="treeUnitPrice" />
+    <result column="public_service_name" jdbcType="VARCHAR" property="publicServiceName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, created_at, created_by, updated_at, updated_by, version, tree_species, planting_time, 
+    tree_num, name, contact, donation_time, tree_unit_price, public_service_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from forestry_public_service_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getCount" parameterType="java.util.Map" resultType="int">
+    select 
+    count(*)
+    from forestry_public_service_record
+    where 1=1
+     <if test="createdAt != null">
+        and created_at > #{createdAt,jdbcType=DATETIME}
+      </if>
+      <if test="createdBy != null">
+       and  created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="updatedAt != null">
+        and updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updatedBy != null">
+       and updated_by = #{updatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="plantingTime != null">
+        and planting_time = #{plantingTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="treeSpecies != null">
+        and tree_species = #{treeSpecies,jdbcType=VARCHAR}
+      </if>
+      <if test="name != null">
+        and name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="treeNum != null">
+        and tree_num = #{treeNum,jdbcType=INTEGER}
+      </if>
+  </select>
+  <select id="queryListPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from forestry_public_service_record
+    where 1=1
+     <if test="createdAt != null">
+       and created_at > #{createdAt,jdbcType=DATETIME}
+     </if>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+     <if test="createdBy != null">
+      and created_by = #{createdBy,jdbcType=VARCHAR}
+     </if>
+     <if test="updatedAt != null">
+       and updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+     </if>
+     <if test="updatedBy != null">
+       and updated_by = #{updatedBy,jdbcType=VARCHAR}
+     </if>
+     <if test="plantingTime != null">
+        and planting_time = #{plantingTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="treeSpecies != null">
+        and tree_species = #{treeSpecies,jdbcType=VARCHAR}
+      </if>
+      <if test="name != null">
+        and name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="treeNum != null">
+        and tree_num = #{treeNum,jdbcType=INTEGER}
+      </if>
+      limit #{pageIndex,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from forestry_public_service_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.forest.entity.publicservice.ForestryPublicServiceRecord">
+    insert into forestry_public_service_record (id, created_at, created_by, 
+      updated_at, updated_by, version, 
+      tree_species, planting_time, tree_num, 
+      name, contact, donation_time, 
+      tree_unit_price, public_service_name)
+    values (#{id,jdbcType=INTEGER}, #{createdAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
+      #{updatedAt,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
+      #{treeSpecies,jdbcType=VARCHAR}, #{plantingTime,jdbcType=TIMESTAMP}, #{treeNum,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{donationTime,jdbcType=TIMESTAMP}, 
+      #{treeUnitPrice,jdbcType=DECIMAL}, #{publicServiceName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.forest.entity.publicservice.ForestryPublicServiceRecord">
+    insert into forestry_public_service_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+      <if test="updatedBy != null">
+        updated_by,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="treeSpecies != null">
+        tree_species,
+      </if>
+      <if test="plantingTime != null">
+        planting_time,
+      </if>
+      <if test="treeNum != null">
+        tree_num,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="contact != null">
+        contact,
+      </if>
+      <if test="donationTime != null">
+        donation_time,
+      </if>
+      <if test="treeUnitPrice != null">
+        tree_unit_price,
+      </if>
+      <if test="publicServiceName != null">
+        public_service_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
+      </if>
+      <if test="treeSpecies != null">
+        #{treeSpecies,jdbcType=VARCHAR},
+      </if>
+      <if test="plantingTime != null">
+        #{plantingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="treeNum != null">
+        #{treeNum,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="donationTime != null">
+        #{donationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="treeUnitPrice != null">
+        #{treeUnitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="publicServiceName != null">
+        #{publicServiceName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.forest.entity.publicservice.ForestryPublicServiceRecord">
+    update forestry_public_service_record
+    <set>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        updated_by = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="treeSpecies != null">
+        tree_species = #{treeSpecies,jdbcType=VARCHAR},
+      </if>
+      <if test="plantingTime != null">
+        planting_time = #{plantingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="treeNum != null">
+        tree_num = #{treeNum,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="donationTime != null">
+        donation_time = #{donationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="treeUnitPrice != null">
+        tree_unit_price = #{treeUnitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="publicServiceName != null">
+        public_service_name = #{publicServiceName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.forest.entity.publicservice.ForestryPublicServiceRecord">
+    update forestry_public_service_record
+    set created_at = #{createdAt,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      updated_by = #{updatedBy,jdbcType=VARCHAR},
+      version = #{version,jdbcType=INTEGER},
+      tree_species = #{treeSpecies,jdbcType=VARCHAR},
+      planting_time = #{plantingTime,jdbcType=TIMESTAMP},
+      tree_num = #{treeNum,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      donation_time = #{donationTime,jdbcType=TIMESTAMP},
+      tree_unit_price = #{treeUnitPrice,jdbcType=DECIMAL},
+      public_service_name = #{publicServiceName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

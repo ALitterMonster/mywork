@@ -81,7 +81,7 @@
 	<table style="width:100%;">
 		<tr>
 			<ul id="tree2" class="mini-tree" style="width:200px;padding:5px;" 
-		        checkRecursive="true" showTreeIcon="true" textField="text" idField="id" parentField="parentId" resultAsTree="false"  
+		        checkRecursive="false" showTreeIcon="true" textField="text" idField="id" parentField="parentId" resultAsTree="false"  
 		        showCheckBox="true"   _checkOnTextClick="true" >
 		    </ul>
 		<tr>

@@ -14,6 +14,8 @@ import com.forest.dao.prevention.ForestryFireRecordMapper;
 import com.forest.dto.common.BaseResultDTO;
 import com.forest.dto.logging.LoggingPlanQueryReusltDTO;
 import com.forest.dto.logging.LoggingPlanQueryReusltData;
+import com.forest.dto.prevention.FirePreventionRecordQueryReusltDTO;
+import com.forest.dto.prevention.FirePreventionRecordQueryReusltData;
 import com.forest.dto.prevention.FireRecordQueryReusltDTO;
 import com.forest.dto.prevention.FireRecordQueryReusltData;
 import com.forest.entity.logging.ForestryLoggingPlan;
@@ -78,10 +80,7 @@ public class FireRecordService {
 		resultDTO.setSucccess();
 		String[] idsList = ids.split(",");
 		for(String id :idsList){
-			ForestryFireRecord record = new ForestryFireRecord();
-			record.setId(new Integer(id));
-			record.setUpdatedAt(new Date());
-			int result = forestryFireRecordMapper.updateByPrimaryKeySelective(record);
+			int result = forestryFireRecordMapper.deleteByPrimaryKey(new Integer(id));
 			if(result==0){
 				resultDTO.setError();
 				return resultDTO;

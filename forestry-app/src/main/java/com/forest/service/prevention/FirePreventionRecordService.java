@@ -77,10 +77,7 @@ public class FirePreventionRecordService {
 		resultDTO.setSucccess();
 		String[] idsList = ids.split(",");
 		for(String id :idsList){
-			ForestryFirePreventionRecord record = new ForestryFirePreventionRecord();
-			record.setId(new Integer(id));
-			record.setUpdatedAt(new Date());
-			int result = forestryFirePreventionRecordMapper.updateByPrimaryKeySelective(record);
+			int result = forestryFirePreventionRecordMapper.deleteByPrimaryKey(new Integer(id));
 			if(result==0){
 				resultDTO.setError();
 				return resultDTO;

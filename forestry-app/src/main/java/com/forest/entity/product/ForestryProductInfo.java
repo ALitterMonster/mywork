@@ -19,7 +19,7 @@ public class ForestryProductInfo {
 
     private String productName;
 
-    private Long amount;
+    private Double amount;
 
     private String unit;
 
@@ -89,11 +89,11 @@ public class ForestryProductInfo {
         this.productName = productName == null ? null : productName.trim();
     }
 
-    public Long getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

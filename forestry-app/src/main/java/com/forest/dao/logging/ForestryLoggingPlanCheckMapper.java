@@ -20,4 +20,7 @@ public interface ForestryLoggingPlanCheckMapper {
     
     int getLoggingPlanCheckCount(Map<String,Object> map);
     List<ForestryLoggingPlanCheck> queryPlanCheckListPage(Map<String,Object> map);
+    
+    int getCheckCount(Map<String,Object> map);
+    List<ForestryLoggingPlanCheck> queryList(Map<String,Object> map);
 }

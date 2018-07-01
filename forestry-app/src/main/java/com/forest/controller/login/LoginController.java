@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -76,7 +77,37 @@ public class LoginController {
 	@ResponseBody
 	public String getMenus(HttpSession session){
 		List<OperationMenu> menuList = (List<OperationMenu>)session.getAttribute("menus");
-		return new Gson().toJson(menuList);
+		List list = new ArrayList<Map<String,Object>>();
+		for(OperationMenu om : menuList){
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("id", om.getId()+"");
+			map.put("text", om.getText());
+			map.put("iconCls", "fa fa-navicon");
+			if(!StringUtils.isEmpty(om.getUrl() ))
+				map.put("url", om.getUrl());
+			if(null != om.getChildren()){
+				map.put("children",getMenu(om.getChildren()));
+			}
+			list.add(map);
+		}
+		return new Gson().toJson(list);
+	}
+	
+	private List<Map<String,Object>> getMenu(List<OperationMenu> rootMenu){
+		List list = new ArrayList<Map<String,String>>();
+		for(OperationMenu om : rootMenu){
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("id", om.getId()+"");
+			map.put("text", om.getText());
+			map.put("iconCls", "fa fa-navicon");
+			if(!StringUtils.isEmpty(om.getUrl() ))
+				map.put("url", om.getUrl());
+			if(null != om.getChildren()){
+				map.put("children",getMenu(om.getChildren()));
+			}
+			list.add(map);
+		}
+		return list;
 	}
 	
 	private List<OperationMenu> getChild(Integer id, List<OperationMenu> rootMenu) {

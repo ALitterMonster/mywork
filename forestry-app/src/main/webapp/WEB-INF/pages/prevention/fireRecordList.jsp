@@ -13,16 +13,13 @@
         <tr>
             <td >火灾发生区域：</td>
             <td>
-                <input class="mini-textbox" id="affectedArea" />
+                <input class="mini-textbox" id="affectedArea_q" name="affectedArea_q"/>
             </td>             
             <td >火灾发生时间</td>
             <td>
-                <input id="occurTime" name="occurTime" class="mini-datepicker" />-
+                <input id="occurTimeStart_q" name="occurTimeStart_q" class="mini-datepicker" />-
+                <input id="occurTimeEnd_q" name="occurTimeEnd_q" class="mini-datepicker" />-
             </td>
-            <td >火灾处理时间</td>
-            <td>
-                <input id="dealTime" name="dealTime" class="mini-datepicker"/>
-            </td> 
             <td>                
             	<a class="mini-button" iconCls="icon-save" onclick="queryList()">查询</a>
             </td> 
@@ -50,8 +47,6 @@
     <div property="columns">
         <div field="id" width="80" align="center" headerAlign="center" allowSort="true">序号</div>  
          <div type="checkcolumn"></div>
-        <div field="createdAt" width="120" dateFormat="yyyy-MM-dd"align="center" headerAlign="center" allowSort="true">创建时间</div>    
-        <div field="createdBy" width="120" headerAlign="center"align="center" allowSort="true">创建用户</div>                            
         <div field="affectedArea" width="100"  align="center" headerAlign="center">火灾发生区域</div>
         <div field="occurTime" headerAlign="center" width="100"align="center" dateFormat="yyyy-MM-dd" allowSort="true">火灾发生时间</div>                                
         <div field="dealTime" headerAlign="center" width="100"align="center" dateFormat="yyyy-MM-dd" allowSort="true">火灾处理时间</div>                                
@@ -73,7 +68,7 @@
                     <td style="width:150px;"><input id="affectedArea" name="affectedArea" class="mini-textbox"required="true" />
                     <input id="recordId" name="recordId" class="mini-hidden" /></td>
 					<td style="width:80px;">火灾处理方案：</td>
-                    <td style="width:150px;"><input id="affectedArea" name="affectedArea" class="mini-textbox"required="true" />
+                    <td style="width:150px;"><input id="dealPlan" name="dealPlan" class="mini-textbox"required="true" />
                </tr>
                <tr>
                 <td style="width:80px;">火灾发生时间：</td>
@@ -114,26 +109,26 @@
     //初始化砍伐信息
     mini.parse();
     var grid = mini.get("fireRecordGrid");
-    grid.load({affectedArea:'',occurTime:'',dealTime:''});
+    grid.load({affectedArea:'',occurTimeStart:'',occurTimeEnd:''});
 
 	//绑定表单
-	var db = new mini.DataBinding();
-	db.bindForm("editForm", grid);
 	var editField = mini.get("editForm");
 	
 	function queryList() {
-    	var affectedArea = mini.get("affectedArea").getValue();
-    	var occurTime = mini.get("occurTime").getFormValue();
-    	var dealTime = mini.get("dealTime").getFormValue();
-    	if(occurTime!=""){
-    		occurTime +=" 00:00:00";
+    	var affectedArea = mini.get("affectedArea_q").getValue();
+    	var occurTimeStart = mini.get("occurTimeStart_q").getFormValue();
+    	var occurTimeEnd = mini.get("occurTimeEnd_q").getFormValue();
+    	if(occurTimeStart!=""){
+    		occurTimeStart +=" 00:00:00";
     	}
-    	if(dealTime!=""){
-    		dealTime +=" 00:00:00";
+    	if(occurTimeEnd!=""){
+    		occurTimeEnd +=" 00:00:00";
     	}
-    	grid.load({affectedArea:affectedArea,occurTime:occurTime,dealTime:dealTime});
+    	grid.load({affectedArea:affectedArea,occurTimeStart:occurTimeStart,occurTimeEnd:occurTimeEnd});
 	}
 	function add() {
+		var form = new mini.Form("#editForm"); 
+		form.setData();
     	editField.show();
 	}
 	function edit() {

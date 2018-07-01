@@ -34,9 +34,9 @@ public class ParkService {
 
 	public BaseResultDTO insertPark(ForestryPark record){
 		record.setCreatedAt(new Date());
-		record.setCreatedBy("sys");
+		record.setCreatedBy(record.getCreatedBy());
 		record.setUpdatedAt(new Date());
-		record.setUpdatedBy("sys");
+		record.setUpdatedBy(record.getCreatedBy());
 		record.setVersion(1);
 		
 		BaseResultDTO resultDTO = new BaseResultDTO();

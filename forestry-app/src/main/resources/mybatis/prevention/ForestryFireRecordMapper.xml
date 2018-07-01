@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.forest.dao.prevention.ForestryFireRecordMapper">
-  <resultMap id="fireRecordResultMap" type="com.forest.entity.prevention.ForestryFireRecord">
+  <resultMap id="BaseResultMap" type="com.forest.entity.prevention.ForestryFireRecord">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="occur_time" jdbcType="TIMESTAMP" property="occurTime" />
     <result column="affected_area" jdbcType="VARCHAR" property="affectedArea" />
@@ -14,10 +14,10 @@
     <result column="wind_direction" jdbcType="VARCHAR" property="windDirection" />
   </resultMap>
   <sql id="Base_Column_List">
-    id,  occur_time, affected_area, 
+    id, occur_time, affected_area, 
     deal_time,deal_plan, longitude,latitude,temperature,air_humidity,wind_direction
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="fireRecordResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from forestry_fire_record
@@ -28,8 +28,11 @@
     count(*)
     from forestry_fire_record
     where 1=1
-      <if test="occurTime != null">
-        and occur_time = #{occurTime,jdbcType=TIMESTAMP}
+      <if test="occurTimeStart != null">
+        and occur_time > #{occurTimeStart,jdbcType=TIMESTAMP}
+      </if>
+       <if test="occurTimeEnd != null">
+        and occur_time  &lt;= #{occurTimeEnd,jdbcType=TIMESTAMP}
       </if>
       <if test="affectedArea != null">
        and affected_area like CONCAT('%', #{affectedArea,jdbcType=VARCHAR},'%')
@@ -38,13 +41,16 @@
         and deal_time = #{dealTime,jdbcType=TIMESTAMP}
       </if>
       </select>
-  <select id="queryRecordListPage" parameterType="java.util.Map" resultMap="fireRecordResultMap">
+  <select id="queryRecordListPage" parameterType="java.util.Map" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from forestry_fire_record
     where 1=1
-      <if test="occurTime != null">
-        and occur_time = #{occurTime,jdbcType=TIMESTAMP}
+       <if test="occurTimeStart != null">
+        and occur_time > #{occurTimeStart,jdbcType=TIMESTAMP}
+      </if>
+       <if test="occurTimeEnd != null">
+        and occur_time  &lt;= #{occurTimeEnd,jdbcType=TIMESTAMP}
       </if>
       <if test="affectedArea != null">
        and affected_area like CONCAT('%', #{affectedArea,jdbcType=VARCHAR},'%')
@@ -62,14 +68,14 @@
    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
     	SELECT LAST_INSERT_ID() AS id
     </selectKey>
-    insert into forestry_fire_record (id, 
+    insert into forestry_fire_record (id,
       occur_time, affected_area, deal_time, 
       deal_plan, longitude, latitude, 
       temperature,air_humidity,wind_direction)
     values (  #{id,jdbcType=INTEGER},
       #{occurTime,jdbcType=TIMESTAMP}, #{affectedArea,jdbcType=VARCHAR},#{dealTime,jdbcType=TIMESTAMP},
       #{dealPlan,jdbcType=VARCHAR},#{longitude,jdbcType=VARCHAR},#{latitude,jdbcType=VARCHAR},
-      #{temperature,jdbcType=VARCHAR},#{airHumidity,jdbcType=VARCHAR},#{windDirection,jdbcType=VARCHAR}
+      #{temperature,jdbcType=VARCHAR},#{airHumidity,jdbcType=VARCHAR},#{windDirection,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.forest.dao.prevention.ForestryFireRecordMapper" keyProperty="id" useGeneratedKeys="true">
   	
@@ -104,6 +110,19 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+     
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
       <if test="occurTime != null">
         #{occurTime,jdbcType=TIMESTAMP},
       </if>
@@ -136,6 +155,18 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.forest.entity.prevention.ForestryFireRecord">
     update forestry_fire_record
     <set>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        updated_by = #{updatedBy,jdbcType=VARCHAR},
+      </if>
       <if test="occurTime != null">
         occur_time = #{occurTime,jdbcType=TIMESTAMP},
       </if>
@@ -168,7 +199,10 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.forest.entity.prevention.ForestryFireRecord">
     update forestry_fire_record
-    set 
+    set created_at = #{createdAt,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      updated_by = #{updatedBy,jdbcType=VARCHAR},
       occur_time = #{occurTime,jdbcType=TIMESTAMP},
       affected_area = #{affectedArea,jdbcType=VARCHAR},
       deal_time = #{dealTime,jdbcType=TIMESTAMP},

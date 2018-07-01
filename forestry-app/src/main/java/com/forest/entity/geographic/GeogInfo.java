@@ -10,6 +10,8 @@ public class GeogInfo {
 	private int type;
 	private int area;
 	private String description;
+	private Integer pageIndex;
+	private Integer pageSize;
 	
 	public int getId() {
 		return id;
@@ -52,6 +54,18 @@ public class GeogInfo {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public Integer getPageIndex() {
+		return pageIndex;
+	}
+	public void setPageIndex(Integer pageIndex) {
+		this.pageIndex = pageIndex;
+	}
+	public Integer getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
 	}
 	
 }

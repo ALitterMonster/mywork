@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.forest.dao.logging.ForestryLoggingPlanCheckMapper;
 import com.forest.dao.logging.ForestryLoggingPlanMapper;
 import com.forest.dto.common.BaseResultDTO;
 import com.forest.dto.logging.LoggingPlanQueryReusltDTO;
@@ -20,6 +21,8 @@ public class LoggingPlanService {
 
 	@Autowired 
 	private ForestryLoggingPlanMapper forestryLoggingPlanMapper;
+	@Autowired
+	private ForestryLoggingPlanCheckMapper forestryLoggingPlanCheckMapper;
 	
 	public BaseResultDTO insertPlan(ForestryLoggingPlan plan){
 		plan.setCreatedAt(new Date());
@@ -35,8 +38,16 @@ public class LoggingPlanService {
 		
 		ForestryLoggingPlanCheck plancheck = new ForestryLoggingPlanCheck();
 		plancheck.setCreatedAt(new Date());
-		plancheck.setCreatedBy("");
-		if(result>0){
+		plancheck.setCreatedBy("sys");
+		plancheck.setUpdatedAt(new Date());
+		plancheck.setUpdatedBy("sys");
+		plancheck.setPlanId(plan.getId());
+		plancheck.setStatus("2");
+		plancheck.setVersion("1");
+		plancheck.setIsValid("1");
+		plancheck.setVersion("1");
+		int checkResult = forestryLoggingPlanCheckMapper.insert(plancheck);
+		if(result>0 && checkResult>0){
 			resultDTO.setSucccess();
 		}else{
 			resultDTO.setError();

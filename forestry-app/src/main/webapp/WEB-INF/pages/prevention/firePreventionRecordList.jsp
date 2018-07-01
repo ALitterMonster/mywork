@@ -11,18 +11,19 @@
 <div id="loggingPlanQueryForm" >
     <table>
         <tr>
-            <td >火灾预防区域：</td>
+            <td >火灾巡防区域：</td>
             <td>
-                <input class="mini-textbox" id="preventionArea" />
+                <input class="mini-textbox" id="preventionArea_q"name="preventionArea_q"  />
             </td>             
-            <td >火灾预防时间</td>
+            <td >火灾巡防时间</td>
             <td>
-                <input id="preventionTime" name="preventionTime" class="mini-datepicker" />-
+                <input id="preventionTimeStart_q" name="preventionTimeStart_Q" class="mini-datepicker" />-<input id="preventionTimeEnd_q" name="preventionTimeEnd_q" class="mini-datepicker" />
             </td>
-            <td >火灾预防结果：</td>
+            <td >火灾巡防结果：</td>
             <td>
-                <input class="mini-textbox" id="preventionResult" />
-            </td>                
+                <input class="mini-textbox" id="preventionResult_q" />
+            </td>   
+            <td>             
             	<a class="mini-button" iconCls="icon-save" onclick="queryList()">查询</a>
             </td> 
         </tr>
@@ -44,16 +45,16 @@
     url="${pageContext.request.contextPath}/prevention/queryFirePreventionRecordList.do"
     idField="id" allowResize="true" multiSelect="true" 
     sizeList="[20,30,50,100]" pageSize="20" 
-    showHeader="true" title="防火检查记录列表"
- onmouseup="return datagrid1_onmouseup()">
+    showHeader="true" title="巡防检查记录列表"
+ 	onmouseup="return datagrid1_onmouseup()">
     <div property="columns">
         <div field="id" width="80" align="center" headerAlign="center" allowSort="true">序号</div>  
-         <div type="checkcolumn"></div>
+        <div type="checkcolumn"></div>
         <div field="createdAt" width="120" dateFormat="yyyy-MM-dd"align="center" headerAlign="center" allowSort="true">创建时间</div>    
         <div field="createdBy" width="120" headerAlign="center"align="center" allowSort="true">创建用户</div>                            
-        <div field="preventionArea" width="100"  align="center" headerAlign="center">火灾预防区域</div>
-        <div field="preventionTime" headerAlign="center" width="100"align="center" dateFormat="yyyy-MM-dd" allowSort="true">火灾预防时间</div>                                
-        <div field="preventionResult" width="100"  align="center" headerAlign="center">火灾预防结果</div>
+        <div field="preventionArea" width="100"  align="center" headerAlign="center">火灾巡防区域</div>
+        <div field="preventionTime" headerAlign="center" width="100"align="center" dateFormat="yyyy-MM-dd" allowSort="true">火灾巡防时间</div>                                
+        <div field="preventionResult" width="100"  align="center" headerAlign="center">火灾巡防结果</div>
         <div field="riskLevel" width="100"  align="center" headerAlign="center">风险等级</div>
     </div>
 </div>
@@ -63,14 +64,14 @@
         <div id="editForm1" style="padding:5px;">
             <table style="width:100%;">
                <tr>
-                    <td style="width:80px;">火灾预防区域：</td>
+                    <td style="width:80px;">火灾巡防区域：</td>
                     <td style="width:150px;"><input id="preventionArea" name="preventionArea" class="mini-textbox"required="true" />
                     <input id="recordId" name="recordId" class="mini-hidden" /></td>
-					<td style="width:80px;">火灾预防结果：</td>
+					<td style="width:80px;">火灾巡防结果：</td>
                     <td style="width:150px;"><input id="preventionResult" name="preventionResult" class="mini-textbox"required="true" />
                </tr>
                <tr>
-                <td style="width:80px;">火灾预防时间：</td>
+                <td style="width:80px;">火灾巡防时间：</td>
                  <td align="left" colspan="1" style="width:150px;">
                  	<input id="preventionTime" name="preventionTime" class="mini-datepicker" required="true" /> 
                  </td>
@@ -92,27 +93,30 @@
     //初始化砍伐信息
     mini.parse();
     var grid = mini.get("firePreventionRecordGrid");
-    grid.load({affectedArea:'',occurTime:'',dealTime:''});
+    grid.load({preventionArea:'',preventionTime:'',preventionResult:''});
 
 	//绑定表单
-	var db = new mini.DataBinding();
-	db.bindForm("editForm", grid);
 	var editField = mini.get("editForm");
 	
 	function queryList() {
-    	var preventionArea = mini.get("preventionArea").getValue();
-    	var preventionTime = mini.get("preventionTime").getFormValue();
-    	var preventionResult = mini.get("preventionResult").getFormValue();
-    	if(occurTime!=""){
-    		occurTime +=" 00:00:00";
+    	var preventionArea = mini.get("preventionArea_q").getValue();
+    	var preventionTimeStart = mini.get("preventionTimeStart_q").getFormValue();
+    	var preventionTimeEnd = mini.get("preventionTimeEnd_q").getFormValue();
+    	var preventionResult = mini.get("preventionResult_q").getFormValue();
+    	if(preventionTimeStart!=""){
+    		preventionTimeStart +=" 00:00:00";
     	}
-    	grid.load({preventionArea:preventionArea,preventionTimee:preventionTime,preventionResult:preventionResult});
+    	if(preventionTimeEnd!=""){
+    		preventionTimeEnd +=" 00:00:00";
+    	}
+    	grid.load({preventionArea:preventionArea,preventionTimeStart:preventionTimeStart,preventionTimeEnd:preventionTimeEnd,preventionResult:preventionResult});
 	}
 	function add() {
+		var form = new mini.Form("#editForm"); 
+		form.setData();
     	editField.show();
 	}
 	function edit() {
-    	
     	var rows = grid.getSelecteds();
     	var id = "";
     	if (rows.length > 1 ||rows.length==0) {
@@ -170,7 +174,7 @@
 	function save() {
 		var form = new mini.Form("#editForm");   
 		form.validate();
-		if (form.isValid() == false) return;
+		if (form.isValid() == false) return false;
 		var data = form.getData();      //获取表单多个控件的数据
 		if(data.preventionTime!=""){
 			data.preventionTime=mini.get("preventionTime").getFormValue()+" 00:00:00";

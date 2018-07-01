@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,7 @@ import com.forest.dto.common.BaseResultDTO;
 import com.forest.dto.park.ParkQueryReusltDTO;
 import com.forest.dto.park.ParkQueryReusltData;
 import com.forest.entity.park.ForestryPark;
+import com.forest.entity.userauth.OperationUser;
 import com.forest.service.park.ParkService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -52,7 +55,7 @@ public class ParkController {
 				 queryParam.put("periodStart", new SimpleDateFormat("yyy-MM-dd HH:mm:ss").parse(periodStart));
 			 }
 			 if(!StringUtils.isEmpty(periodEnd)){
-				queryParam.put("dealTime", new SimpleDateFormat("yyy-MM-dd HH:mm:ss").parse(periodEnd));
+				queryParam.put("periodEnd", new SimpleDateFormat("yyy-MM-dd HH:mm:ss").parse(periodEnd));
 			 }
 			 
 			 resultDTO = parkService.queryList(queryParam);
@@ -89,7 +92,7 @@ public class ParkController {
 	  */
 	 @ResponseBody
 	 @RequestMapping(value="/addPark.do",method = RequestMethod.POST)
-	 public String addPark(@RequestParam("park") String park) {
+	 public String addPark(@RequestParam("park") String park,HttpSession session) {
 		 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); 
 		 ForestryPark record = gson.fromJson(park, ForestryPark.class);
 		 BaseResultDTO resultDTO = new BaseResultDTO();
@@ -97,6 +100,8 @@ public class ParkController {
 			 resultDTO.setParamError();
 			 return new Gson().toJson(resultDTO);
 		 }
+		 OperationUser user = (OperationUser)session.getAttribute("user");
+		 record.setCreatedBy(user.getUserName()+"");
 		 resultDTO = parkService.insertPark(record);
 		 
 		 return new Gson().toJson(resultDTO);

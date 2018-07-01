@@ -32,6 +32,7 @@ public class ProductService {
 		product.setUpdatedBy("sys");
 		product.setVersion(1);
 		product.setIsValid("1");
+		product.setAmount(new Double(0.00));
 		
 		BaseResultDTO resultDTO = new BaseResultDTO();
 		int result = forestryProductInfoMapper.insert(product);
