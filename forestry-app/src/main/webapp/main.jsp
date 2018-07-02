@@ -28,6 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div class="navbar-brand">林业管理系统</div>
         <div class="navbar-brand navbar-brand-compact">M</div>
     </div>
+    <div id="allmap" style="width:100%;height:100%;" hidden></div>
     <ul class="nav navbar-nav">
         <li><a id="toggle"><span class="fa fa-bars" ></span></a></li>
     </ul>
@@ -56,12 +57,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div id="mainMenu">
         </div>
     </div>
-
+	
     <div class="main">
         <div id="mainTabs" class="mini-tabs main-tabs" activeIndex="0" style="height:100%;" plain="false"
              buttons="#tabsButtons" arrowPosition="side" >
             <div name="index" iconCls="fa-android" title="控制台">
-                <div id="allmap" style="width:auto;height:auto;"></div>
+                <div id="allmap" style="width:auto;height:auto;">
+                	<jsp:include page="echarts.jsp"></jsp:include>
+                </div>
             </div>
         </div>
     </div>
