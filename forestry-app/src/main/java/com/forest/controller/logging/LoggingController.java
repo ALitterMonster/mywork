@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import com.forest.dto.common.BaseResultDTO;
 import com.forest.dto.logging.LoggingPlanQueryReusltDTO;
 import com.forest.dto.logging.LoggingPlanQueryReusltData;
 import com.forest.entity.logging.ForestryLoggingPlan;
+import com.forest.entity.userauth.OperationUser;
 import com.forest.service.logging.LoggingPlanService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -93,7 +96,7 @@ public class LoggingController {
 	  */
 	 @ResponseBody
 	 @RequestMapping(value="/addPlan.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
-	 public String addPlan(@RequestParam("planInfo") String planInfo) {
+	 public String addPlan(@RequestParam("planInfo") String planInfo,HttpSession session) {
 		 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); 
 		 ForestryLoggingPlan plan = gson.fromJson(planInfo, ForestryLoggingPlan.class);
 		 BaseResultDTO resultDTO = new BaseResultDTO();
@@ -102,7 +105,10 @@ public class LoggingController {
 			 resultDTO.setParamError();
 			 return new Gson().toJson(resultDTO);
 		 }
-		 resultDTO = loggingPlanService.insertPlan(plan);
+		 OperationUser user = (OperationUser)session.getAttribute("user");
+		 plan.setCreatedBy(user.getUserName()+"");
+		 plan.setUpdatedBy(user.getUserName()+"");
+		 resultDTO = loggingPlanService.insertPlan(plan,user.getUserName());
 		 
 		 return new Gson().toJson(resultDTO);
 	  }

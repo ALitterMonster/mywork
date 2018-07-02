@@ -30,8 +30,6 @@ public class LoggingCheckService {
 	public BaseResultDTO insertRecord(ForestryLoggingPlanCheck check){
 		check.setCreatedAt(new Date());
 		check.setUpdatedAt(new Date());
-		check.setCreatedBy("sys");
-		check.setUpdatedBy("sys");
 		check.setVersion("1");
 		check.setIsValid("1");
 		

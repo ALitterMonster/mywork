@@ -36,7 +36,7 @@ public class BlockController {
 	 }
 	 
 	 @ResponseBody
-	 @RequestMapping("/queryBlockList.do")
+	 @RequestMapping(value="/queryBlockList.do",produces = "application/json; charset=utf-8")
 	 public String queryBlockList(@RequestParam(value="blockType",required=false) String blockType,
 			 @RequestParam(value="longitude",required=false) String longitude,
 			 @RequestParam(value="latitude",required=false) String latitude,
@@ -60,7 +60,7 @@ public class BlockController {
 	 }
 	 
 	 @ResponseBody
-	 @RequestMapping("/queryBlockById.do")
+	 @RequestMapping(value="/queryBlockById.do",produces = "application/json; charset=utf-8")
 	 public String queryBockById(@RequestParam(value="id") String id) {
 		 BlockQueryReusltData resultDTO= new BlockQueryReusltData();
 		 try {
@@ -82,7 +82,7 @@ public class BlockController {
 	  * @return
 	  */
 	 @ResponseBody
-	 @RequestMapping(value="/addBlock.do",method = RequestMethod.POST)
+	 @RequestMapping(value="/addBlock.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
 	 public String addBlock(@RequestParam("block") String block) {
 		 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); 
 		 ForestryBlock record = gson.fromJson(block, ForestryBlock.class);
@@ -98,7 +98,7 @@ public class BlockController {
 	 }
 	 
 	 @ResponseBody
-	 @RequestMapping(value="/batchDeleteBlock.do",method = RequestMethod.POST)
+	 @RequestMapping(value="/batchDeleteBlock.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
 	 public String batchDeleteBlock(@RequestParam("ids") String ids) {
 		 BaseResultDTO resultDTO = new BaseResultDTO();
 		 if(StringUtils.isEmpty(ids)){
@@ -116,7 +116,7 @@ public class BlockController {
 	  * @return
 	  */
 	 @ResponseBody
-	 @RequestMapping(value="/updateBlock.do",method = RequestMethod.POST)
+	 @RequestMapping(value="/updateBlock.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
 	 public String updateBlock(@RequestParam("block") String block) {
 		 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); 
 		 ForestryBlock record = gson.fromJson(block, ForestryBlock.class);

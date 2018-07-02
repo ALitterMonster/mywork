@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.forest.dao.forum.KbQaQuestionMapper">
+  <resultMap id="qaResultMap" type="com.forest.entity.forum.KbQaQuestion">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="footnote" jdbcType="VARCHAR" property="footnote" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="askid" jdbcType="VARCHAR" property="askid" />
+    <result column="askername" jdbcType="VARCHAR" property="askername" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="acount" jdbcType="INTEGER" property="acount" />
+    <result column="vcount" jdbcType="INTEGER" property="vcount" />
+    <result column="selectedanswerid" jdbcType="VARCHAR" property="selectedanswerid" />
+    <result column="selecteduserid" jdbcType="VARCHAR" property="selecteduserid" />
+    <result column="selectedusername" jdbcType="VARCHAR" property="selectedusername" />
+    <result column="selectedtime" jdbcType="TIMESTAMP" property="selectedtime" />
+    <result column="closerid" jdbcType="VARCHAR" property="closerid" />
+    <result column="closername" jdbcType="VARCHAR" property="closername" />
+    <result column="closertime" jdbcType="TIMESTAMP" property="closertime" />
+    <result column="closememo" jdbcType="VARCHAR" property="closememo" />
+    <result column="removed" jdbcType="VARCHAR" property="removed" />
+    <result column="deleterid" jdbcType="VARCHAR" property="deleterid" />
+    <result column="deletername" jdbcType="VARCHAR" property="deletername" />
+    <result column="deletertime" jdbcType="TIMESTAMP" property="deletertime" />
+    <result column="deletermemo" jdbcType="VARCHAR" property="deletermemo" />
+    <result column="regioncode" jdbcType="VARCHAR" property="regioncode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, footnote, status, askid, askername, updatetime, acount, vcount, selectedanswerid, 
+    selecteduserid, selectedusername, selectedtime, closerid, closername, closertime, 
+    closememo, removed, deleterid, deletername, deletertime, deletermemo, regioncode
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="qaResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from kb_qa_question
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select 
+    count(*)
+    from kb_qa_question
+    where removed=0
+    <if test="title != null">
+        and title like CONCAT('%', #{title,jdbcType=VARCHAR},'%')
+      </if>
+  </select>
+  <select id="queryList" parameterType="java.util.Map" resultMap="qaResultMap">
+    select 
+     <include refid="Base_Column_List" />
+    from kb_qa_question
+    where removed=0
+    <if test="title != null">
+        and title like CONCAT('%', #{title,jdbcType=VARCHAR},'%')
+    </if>
+      limit #{pageIndex,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from kb_qa_question
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.forest.entity.forum.KbQaQuestion">
+  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+    	SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    insert into kb_qa_question (id, title, footnote, 
+      status, askid, askername, 
+      updatetime, acount, vcount, 
+      selectedanswerid, selecteduserid, selectedusername, 
+      selectedtime, closerid, closername, 
+      closertime, closememo, removed, 
+      deleterid, deletername, deletertime, 
+      deletermemo, regioncode)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{footnote,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{askid,jdbcType=VARCHAR}, #{askername,jdbcType=VARCHAR}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{acount,jdbcType=INTEGER}, #{vcount,jdbcType=INTEGER}, 
+      #{selectedanswerid,jdbcType=VARCHAR}, #{selecteduserid,jdbcType=VARCHAR}, #{selectedusername,jdbcType=VARCHAR}, 
+      #{selectedtime,jdbcType=TIMESTAMP}, #{closerid,jdbcType=VARCHAR}, #{closername,jdbcType=VARCHAR}, 
+      #{closertime,jdbcType=TIMESTAMP}, #{closememo,jdbcType=VARCHAR}, #{removed,jdbcType=VARCHAR}, 
+      #{deleterid,jdbcType=VARCHAR}, #{deletername,jdbcType=VARCHAR}, #{deletertime,jdbcType=TIMESTAMP}, 
+      #{deletermemo,jdbcType=VARCHAR}, #{regioncode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.forest.entity.forum.KbQaQuestion">
+    insert into kb_qa_question
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="footnote != null">
+        footnote,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="askid != null">
+        askid,
+      </if>
+      <if test="askername != null">
+        askername,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+      <if test="acount != null">
+        acount,
+      </if>
+      <if test="vcount != null">
+        vcount,
+      </if>
+      <if test="selectedanswerid != null">
+        selectedanswerid,
+      </if>
+      <if test="selecteduserid != null">
+        selecteduserid,
+      </if>
+      <if test="selectedusername != null">
+        selectedusername,
+      </if>
+      <if test="selectedtime != null">
+        selectedtime,
+      </if>
+      <if test="closerid != null">
+        closerid,
+      </if>
+      <if test="closername != null">
+        closername,
+      </if>
+      <if test="closertime != null">
+        closertime,
+      </if>
+      <if test="closememo != null">
+        closememo,
+      </if>
+      <if test="removed != null">
+        removed,
+      </if>
+      <if test="deleterid != null">
+        deleterid,
+      </if>
+      <if test="deletername != null">
+        deletername,
+      </if>
+      <if test="deletertime != null">
+        deletertime,
+      </if>
+      <if test="deletermemo != null">
+        deletermemo,
+      </if>
+      <if test="regioncode != null">
+        regioncode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="footnote != null">
+        #{footnote,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="askid != null">
+        #{askid,jdbcType=VARCHAR},
+      </if>
+      <if test="askername != null">
+        #{askername,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acount != null">
+        #{acount,jdbcType=INTEGER},
+      </if>
+      <if test="vcount != null">
+        #{vcount,jdbcType=INTEGER},
+      </if>
+      <if test="selectedanswerid != null">
+        #{selectedanswerid,jdbcType=VARCHAR},
+      </if>
+      <if test="selecteduserid != null">
+        #{selecteduserid,jdbcType=VARCHAR},
+      </if>
+      <if test="selectedusername != null">
+        #{selectedusername,jdbcType=VARCHAR},
+      </if>
+      <if test="selectedtime != null">
+        #{selectedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closerid != null">
+        #{closerid,jdbcType=VARCHAR},
+      </if>
+      <if test="closername != null">
+        #{closername,jdbcType=VARCHAR},
+      </if>
+      <if test="closertime != null">
+        #{closertime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closememo != null">
+        #{closememo,jdbcType=VARCHAR},
+      </if>
+      <if test="removed != null">
+        #{removed,jdbcType=VARCHAR},
+      </if>
+      <if test="deleterid != null">
+        #{deleterid,jdbcType=VARCHAR},
+      </if>
+      <if test="deletername != null">
+        #{deletername,jdbcType=VARCHAR},
+      </if>
+      <if test="deletertime != null">
+        #{deletertime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletermemo != null">
+        #{deletermemo,jdbcType=VARCHAR},
+      </if>
+      <if test="regioncode != null">
+        #{regioncode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.forest.entity.forum.KbQaQuestion">
+    update kb_qa_question
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="footnote != null">
+        footnote = #{footnote,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="askid != null">
+        askid = #{askid,jdbcType=VARCHAR},
+      </if>
+      <if test="askername != null">
+        askername = #{askername,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acount != null">
+        acount = #{acount,jdbcType=INTEGER},
+      </if>
+      <if test="vcount != null">
+        vcount = #{vcount,jdbcType=INTEGER},
+      </if>
+      <if test="selectedanswerid != null">
+        selectedanswerid = #{selectedanswerid,jdbcType=VARCHAR},
+      </if>
+      <if test="selecteduserid != null">
+        selecteduserid = #{selecteduserid,jdbcType=VARCHAR},
+      </if>
+      <if test="selectedusername != null">
+        selectedusername = #{selectedusername,jdbcType=VARCHAR},
+      </if>
+      <if test="selectedtime != null">
+        selectedtime = #{selectedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closerid != null">
+        closerid = #{closerid,jdbcType=VARCHAR},
+      </if>
+      <if test="closername != null">
+        closername = #{closername,jdbcType=VARCHAR},
+      </if>
+      <if test="closertime != null">
+        closertime = #{closertime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closememo != null">
+        closememo = #{closememo,jdbcType=VARCHAR},
+      </if>
+      <if test="removed != null">
+        removed = #{removed,jdbcType=VARCHAR},
+      </if>
+      <if test="deleterid != null">
+        deleterid = #{deleterid,jdbcType=VARCHAR},
+      </if>
+      <if test="deletername != null">
+        deletername = #{deletername,jdbcType=VARCHAR},
+      </if>
+      <if test="deletertime != null">
+        deletertime = #{deletertime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletermemo != null">
+        deletermemo = #{deletermemo,jdbcType=VARCHAR},
+      </if>
+      <if test="regioncode != null">
+        regioncode = #{regioncode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.forest.entity.forum.KbQaQuestion">
+    update kb_qa_question
+    set title = #{title,jdbcType=VARCHAR},
+      footnote = #{footnote,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      askid = #{askid,jdbcType=VARCHAR},
+      askername = #{askername,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      acount = #{acount,jdbcType=INTEGER},
+      vcount = #{vcount,jdbcType=INTEGER},
+      selectedanswerid = #{selectedanswerid,jdbcType=VARCHAR},
+      selecteduserid = #{selecteduserid,jdbcType=VARCHAR},
+      selectedusername = #{selectedusername,jdbcType=VARCHAR},
+      selectedtime = #{selectedtime,jdbcType=TIMESTAMP},
+      closerid = #{closerid,jdbcType=VARCHAR},
+      closername = #{closername,jdbcType=VARCHAR},
+      closertime = #{closertime,jdbcType=TIMESTAMP},
+      closememo = #{closememo,jdbcType=VARCHAR},
+      removed = #{removed,jdbcType=VARCHAR},
+      deleterid = #{deleterid,jdbcType=VARCHAR},
+      deletername = #{deletername,jdbcType=VARCHAR},
+      deletertime = #{deletertime,jdbcType=TIMESTAMP},
+      deletermemo = #{deletermemo,jdbcType=VARCHAR},
+      regioncode = #{regioncode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

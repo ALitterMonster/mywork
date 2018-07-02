@@ -41,7 +41,7 @@ public class ParkController {
 	 }
 	 
 	 @ResponseBody
-	 @RequestMapping("/queryParkList.do")
+	 @RequestMapping(value="/queryParkList.do",produces = "application/json; charset=utf-8")
 	 public String queryParkList(@RequestParam(value="periodStart",required=false) String periodStart,
 			 @RequestParam(value="periodEnd",required=false) String periodEnd,
 			 @RequestParam(value="pageIndex",required=false) String pageIndex,
@@ -67,7 +67,7 @@ public class ParkController {
 	  }
 	 
 	 @ResponseBody
-	 @RequestMapping("/queryParkById.do")
+	 @RequestMapping(value="/queryParkById.do",produces = "application/json; charset=utf-8")
 	 public String queryParkById(@RequestParam(value="id") String id) {
 		 Map<String ,Object> queryParam = new HashMap<String ,Object>();
 		 ParkQueryReusltData resultDTO= new ParkQueryReusltData();
@@ -91,7 +91,7 @@ public class ParkController {
 	  * @return
 	  */
 	 @ResponseBody
-	 @RequestMapping(value="/addPark.do",method = RequestMethod.POST)
+	 @RequestMapping(value="/addPark.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
 	 public String addPark(@RequestParam("park") String park,HttpSession session) {
 		 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); 
 		 ForestryPark record = gson.fromJson(park, ForestryPark.class);
@@ -108,7 +108,7 @@ public class ParkController {
 	 }
 	 
 	 @ResponseBody
-	 @RequestMapping(value="/batchDeletePark.do",method = RequestMethod.POST)
+	 @RequestMapping(value="/batchDeletePark.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
 	 public String batchDeletePark(@RequestParam("ids") String ids) {
 		 BaseResultDTO resultDTO = new BaseResultDTO();
 		 if(StringUtils.isEmpty(ids)){
@@ -126,7 +126,7 @@ public class ParkController {
 	  * @return
 	  */
 	 @ResponseBody
-	 @RequestMapping(value="/updatePark.do",method = RequestMethod.POST)
+	 @RequestMapping(value="/updatePark.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
 	 public String updatePark(@RequestParam("park") String park) {
 		 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); 
 		 ForestryPark record = gson.fromJson(park, ForestryPark.class);

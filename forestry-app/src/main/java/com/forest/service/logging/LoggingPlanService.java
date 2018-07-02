@@ -24,11 +24,9 @@ public class LoggingPlanService {
 	@Autowired
 	private ForestryLoggingPlanCheckMapper forestryLoggingPlanCheckMapper;
 	
-	public BaseResultDTO insertPlan(ForestryLoggingPlan plan){
+	public BaseResultDTO insertPlan(ForestryLoggingPlan plan,String username){
 		plan.setCreatedAt(new Date());
-		plan.setCreatedBy("sys");
 		plan.setUpdatedAt(new Date());
-		plan.setUpdatedBy("sys");
 		plan.setVersion(1);
 		plan.setIsValid("1");
 		plan.setIsEnable("0");
@@ -38,9 +36,9 @@ public class LoggingPlanService {
 		
 		ForestryLoggingPlanCheck plancheck = new ForestryLoggingPlanCheck();
 		plancheck.setCreatedAt(new Date());
-		plancheck.setCreatedBy("sys");
+		plancheck.setCreatedBy(username);
 		plancheck.setUpdatedAt(new Date());
-		plancheck.setUpdatedBy("sys");
+		plancheck.setUpdatedBy(username);
 		plancheck.setPlanId(plan.getId());
 		plancheck.setStatus("2");
 		plancheck.setVersion("1");

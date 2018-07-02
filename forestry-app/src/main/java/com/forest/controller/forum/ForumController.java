@@ -14,8 +14,11 @@ import com.alibaba.druid.util.StringUtils;
 import com.forest.dto.block.BlockQueryReusltDTO;
 import com.forest.dto.block.BlockQueryReusltData;
 import com.forest.dto.common.BaseResultDTO;
+import com.forest.dto.forum.KbQaQuestionDTO;
 import com.forest.entity.block.ForestryBlock;
+import com.forest.entity.forum.KbQaQuestion;
 import com.forest.service.block.BlockService;
+import com.forest.service.forum.QuestionService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -24,7 +27,7 @@ import com.google.gson.GsonBuilder;
 public class ForumController {
 	
 	@Autowired
-	private BlockService blockService;
+	private QuestionService questionService;
 	
 	/**
 	 * 区块信息管理页面
@@ -36,43 +39,18 @@ public class ForumController {
 	 }
 	 
 	 @ResponseBody
-	 @RequestMapping("/queryBlockList.do")
-	 public String queryBlockList(@RequestParam(value="blockType",required=false) String blockType,
-			 @RequestParam(value="longitude",required=false) String longitude,
-			 @RequestParam(value="latitude",required=false) String latitude,
+	 @RequestMapping(value="/queryList.do",produces = "application/json; charset=utf-8")
+	 public String queryBlockList(@RequestParam(value="title",required=false) String title,
 			 @RequestParam(value="pageIndex",required=false) String pageIndex,
 			 @RequestParam(value="pageSize",required=false) String pageSize) {
 		 Map<String ,Object> queryParam = new HashMap<String ,Object>();
-		 BlockQueryReusltDTO resultDTO= new BlockQueryReusltDTO();
-		 if(!StringUtils.isEmpty(blockType)){
-			 queryParam.put("blockType",blockType);
-		 }
-		 if(!StringUtils.isEmpty(longitude)){
-			 queryParam.put("longitude",longitude);
-		 }
-		 if(!StringUtils.isEmpty(latitude)){
-			 queryParam.put("latitude",latitude);
+		 KbQaQuestionDTO resultDTO= new KbQaQuestionDTO();
+		 if(!StringUtils.isEmpty(title)){
+			 queryParam.put("title",title);
 		 }
 		 queryParam.put("pageIndex",Integer.parseInt(pageIndex));
 		 queryParam.put("pageSize",Integer.parseInt(pageSize));
-		 resultDTO = blockService.queryList(queryParam);
-		 return new Gson().toJson(resultDTO);
-	 }
-	 
-	 @ResponseBody
-	 @RequestMapping("/queryBlockById.do")
-	 public String queryBockById(@RequestParam(value="id") String id) {
-		 BlockQueryReusltData resultDTO= new BlockQueryReusltData();
-		 try {
-		 if(StringUtils.isEmpty(id)){
-			resultDTO.setParamError();
-			return new Gson().toJson(resultDTO);
-		 }
-		 resultDTO = blockService.selectByPrimaryKey(Integer.parseInt(id));
-		 } catch (Exception e) {
-				e.printStackTrace();
-				resultDTO.setError();
-		}
+		 resultDTO = questionService.queryList(queryParam);
 		 return new Gson().toJson(resultDTO);
 	 }
 	 
@@ -82,30 +60,26 @@ public class ForumController {
 	  * @return
 	  */
 	 @ResponseBody
-	 @RequestMapping(value="/addBlock.do",method = RequestMethod.POST)
-	 public String addBlock(@RequestParam("block") String block) {
+	 @RequestMapping(value="/add.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
+	 public String addBlock(@RequestParam("data") String data) {
 		 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); 
-		 ForestryBlock record = gson.fromJson(block, ForestryBlock.class);
+		 KbQaQuestion record = gson.fromJson(data, KbQaQuestion.class);
 		 BaseResultDTO resultDTO = new BaseResultDTO();
-		 if(StringUtils.isEmpty(record.getBlockType()) || StringUtils.isEmpty(record.getLongitude())
-				 || StringUtils.isEmpty(record.getLatitude())){
-			 resultDTO.setParamError();
-			 return new Gson().toJson(resultDTO);
-		 }
-		 resultDTO = blockService.insertBlock(record);
+		 
+		 resultDTO = questionService.insert(record);
 		 
 		 return new Gson().toJson(resultDTO);
 	 }
 	 
 	 @ResponseBody
-	 @RequestMapping(value="/batchDeleteBlock.do",method = RequestMethod.POST)
+	 @RequestMapping(value="/batchDelete.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
 	 public String batchDeleteBlock(@RequestParam("ids") String ids) {
 		 BaseResultDTO resultDTO = new BaseResultDTO();
 		 if(StringUtils.isEmpty(ids)){
 			 resultDTO.setParamError();
 			 return new Gson().toJson(resultDTO);
 		 }
-		 resultDTO = blockService.batchDelete(ids);
+		 resultDTO = questionService.batchDelete(ids);
 		 
 		 return new Gson().toJson(resultDTO);
 	 }
@@ -116,16 +90,16 @@ public class ForumController {
 	  * @return
 	  */
 	 @ResponseBody
-	 @RequestMapping(value="/updateBlock.do",method = RequestMethod.POST)
-	 public String updateBlock(@RequestParam("block") String block) {
+	 @RequestMapping(value="/update.do",method = RequestMethod.POST,produces = "application/json; charset=utf-8")
+	 public String updateBlock(@RequestParam("data") String data) {
 		 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); 
-		 ForestryBlock record = gson.fromJson(block, ForestryBlock.class);
+		 KbQaQuestion question = gson.fromJson(data, KbQaQuestion.class);
 		 BaseResultDTO resultDTO = new BaseResultDTO();
-		 if(StringUtils.isEmpty(record.getId().toString())){
+		 if(StringUtils.isEmpty(question.getId().toString())){
 			 resultDTO.setParamError();
 			 return new Gson().toJson(resultDTO);
 		 }
-		 resultDTO = blockService.updateBlock(record);
+		 resultDTO = questionService.update(question);
 		 return new Gson().toJson(resultDTO);
 	 }
 	 

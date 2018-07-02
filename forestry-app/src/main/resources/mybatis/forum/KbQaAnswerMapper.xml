@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.forest.dao.forum.KbQaAnswerMapper">
+  <resultMap id="answerResultMap" type="com.forest.entity.forum.KbQaAnswer">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="questionid" jdbcType="VARCHAR" property="questionid" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="answerid" jdbcType="VARCHAR" property="answerid" />
+    <result column="answername" jdbcType="VARCHAR" property="answername" />
+    <result column="answertime" jdbcType="TIMESTAMP" property="answertime" />
+    <result column="cmtcount" jdbcType="INTEGER" property="cmtcount" />
+    <result column="goodcount" jdbcType="INTEGER" property="goodcount" />
+    <result column="removed" jdbcType="VARCHAR" property="removed" />
+    <result column="deleterid" jdbcType="VARCHAR" property="deleterid" />
+    <result column="deletername" jdbcType="VARCHAR" property="deletername" />
+    <result column="deletetime" jdbcType="TIMESTAMP" property="deletetime" />
+    <result column="deletememo" jdbcType="VARCHAR" property="deletememo" />
+    <result column="regioncode" jdbcType="VARCHAR" property="regioncode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, questionid, memo, answerid, answername, answertime, cmtcount, goodcount, removed, 
+    deleterid, deletername, deletetime, deletememo, regioncode
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="answerResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from kb_qa_answer
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="queryList" parameterType="java.util.Map" resultMap="answerResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from kb_qa_answer
+    where removed = 0 and questionid =#{questionid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from kb_qa_answer
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.forest.entity.forum.KbQaAnswer">
+    insert into kb_qa_answer (id, questionid, memo, 
+      answerid, answername, answertime, 
+      cmtcount, goodcount, removed, 
+      deleterid, deletername, deletetime, 
+      deletememo, regioncode)
+    values (#{id,jdbcType=INTEGER}, #{questionid,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, 
+      #{answerid,jdbcType=VARCHAR}, #{answername,jdbcType=VARCHAR}, #{answertime,jdbcType=TIMESTAMP}, 
+      #{cmtcount,jdbcType=INTEGER}, #{goodcount,jdbcType=INTEGER}, #{removed,jdbcType=VARCHAR}, 
+      #{deleterid,jdbcType=VARCHAR}, #{deletername,jdbcType=VARCHAR}, #{deletetime,jdbcType=TIMESTAMP}, 
+      #{deletememo,jdbcType=VARCHAR}, #{regioncode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.forest.entity.forum.KbQaAnswer">
+    insert into kb_qa_answer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="questionid != null">
+        questionid,
+      </if>
+      <if test="memo != null">
+        memo,
+      </if>
+      <if test="answerid != null">
+        answerid,
+      </if>
+      <if test="answername != null">
+        answername,
+      </if>
+      <if test="answertime != null">
+        answertime,
+      </if>
+      <if test="cmtcount != null">
+        cmtcount,
+      </if>
+      <if test="goodcount != null">
+        goodcount,
+      </if>
+      <if test="removed != null">
+        removed,
+      </if>
+      <if test="deleterid != null">
+        deleterid,
+      </if>
+      <if test="deletername != null">
+        deletername,
+      </if>
+      <if test="deletetime != null">
+        deletetime,
+      </if>
+      <if test="deletememo != null">
+        deletememo,
+      </if>
+      <if test="regioncode != null">
+        regioncode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="questionid != null">
+        #{questionid,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="answerid != null">
+        #{answerid,jdbcType=VARCHAR},
+      </if>
+      <if test="answername != null">
+        #{answername,jdbcType=VARCHAR},
+      </if>
+      <if test="answertime != null">
+        #{answertime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cmtcount != null">
+        #{cmtcount,jdbcType=INTEGER},
+      </if>
+      <if test="goodcount != null">
+        #{goodcount,jdbcType=INTEGER},
+      </if>
+      <if test="removed != null">
+        #{removed,jdbcType=VARCHAR},
+      </if>
+      <if test="deleterid != null">
+        #{deleterid,jdbcType=VARCHAR},
+      </if>
+      <if test="deletername != null">
+        #{deletername,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletememo != null">
+        #{deletememo,jdbcType=VARCHAR},
+      </if>
+      <if test="regioncode != null">
+        #{regioncode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.forest.entity.forum.KbQaAnswer">
+    update kb_qa_answer
+    <set>
+      <if test="questionid != null">
+        questionid = #{questionid,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="answerid != null">
+        answerid = #{answerid,jdbcType=VARCHAR},
+      </if>
+      <if test="answername != null">
+        answername = #{answername,jdbcType=VARCHAR},
+      </if>
+      <if test="answertime != null">
+        answertime = #{answertime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cmtcount != null">
+        cmtcount = #{cmtcount,jdbcType=INTEGER},
+      </if>
+      <if test="goodcount != null">
+        goodcount = #{goodcount,jdbcType=INTEGER},
+      </if>
+      <if test="removed != null">
+        removed = #{removed,jdbcType=VARCHAR},
+      </if>
+      <if test="deleterid != null">
+        deleterid = #{deleterid,jdbcType=VARCHAR},
+      </if>
+      <if test="deletername != null">
+        deletername = #{deletername,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        deletetime = #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletememo != null">
+        deletememo = #{deletememo,jdbcType=VARCHAR},
+      </if>
+      <if test="regioncode != null">
+        regioncode = #{regioncode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.forest.entity.forum.KbQaAnswer">
+    update kb_qa_answer
+    set questionid = #{questionid,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      answerid = #{answerid,jdbcType=VARCHAR},
+      answername = #{answername,jdbcType=VARCHAR},
+      answertime = #{answertime,jdbcType=TIMESTAMP},
+      cmtcount = #{cmtcount,jdbcType=INTEGER},
+      goodcount = #{goodcount,jdbcType=INTEGER},
+      removed = #{removed,jdbcType=VARCHAR},
+      deleterid = #{deleterid,jdbcType=VARCHAR},
+      deletername = #{deletername,jdbcType=VARCHAR},
+      deletetime = #{deletetime,jdbcType=TIMESTAMP},
+      deletememo = #{deletememo,jdbcType=VARCHAR},
+      regioncode = #{regioncode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -38,7 +38,7 @@ mini.parse();
 form = new mini.Form("#addForm");
 function doSave(){
 	try{
-		
+		var form = new mini.Form("#addForm");
 		var data = form.getData();//获取表单多个控件的数据
 		data = mini.encode(data);//序列化成JSON
 		MiniUtils.request({
